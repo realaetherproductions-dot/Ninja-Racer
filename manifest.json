@@ -1,0 +1,20 @@
+{
+  "name": "NinjaCycle",
+  "short_name": "NinjaCycle",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#050816",
+  "lang": "en-US",
+  "orientation": "portrait",
+  "description": "Dodge traffic, duel enemy riders, and survive the neon highway.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
