@@ -209,10 +209,222 @@
 
     .tip.hidden,
     .install.hidden,
+    .update-banner.hidden,
     .orientation-note.hidden,
-    .game-over.hidden {
+    .game-over.hidden,
+    .start-screen.hidden,
+    .menu-panel.hidden {
       opacity: 0;
       visibility: hidden;
+    }
+
+    #app.menu-active .brand,
+    #app.menu-active .topbar,
+    #app.menu-active .tip,
+    #app.menu-active .install,
+    #app.menu-active .update-banner,
+    #app.menu-active .controls {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .start-screen,
+    .menu-panel {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: auto;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .start-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px calc(env(safe-area-inset-bottom, 0px) + 24px);
+      background:
+        linear-gradient(180deg, rgba(4, 6, 18, 0.22), rgba(4, 6, 18, 0.82)),
+        radial-gradient(circle at 50% 12%, rgba(118, 77, 255, 0.26), transparent 34%);
+    }
+
+    .menu-card {
+      width: min(100%, 420px);
+      padding: 28px 22px 24px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(11, 14, 33, 0.9), rgba(6, 9, 22, 0.8)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+      backdrop-filter: blur(16px);
+    }
+
+    .menu-badge,
+    .menu-version,
+    .best-score {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--subtle);
+    }
+
+    .menu-badge {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(109, 247, 255, 0.18);
+      background: rgba(109, 247, 255, 0.06);
+      color: #b9fbff;
+    }
+
+    .menu-title {
+      font-size: clamp(42px, 12vw, 72px);
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f8f8ff;
+      text-shadow: 0 0 18px rgba(109, 247, 255, 0.12);
+    }
+
+    .menu-title span {
+      display: block;
+      color: #ff7a52;
+      text-shadow: 0 0 18px rgba(255, 122, 82, 0.18);
+    }
+
+    .menu-subtitle {
+      margin-top: 12px;
+      color: var(--subtle);
+      line-height: 1.5;
+      font-size: 14px;
+      max-width: 32ch;
+    }
+
+    .menu-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .menu-btn,
+    .panel-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 18px;
+      min-height: 54px;
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #f5f7ff;
+      background: linear-gradient(180deg, rgba(83, 98, 214, 0.34), rgba(42, 50, 112, 0.66));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-btn.primary {
+      background: linear-gradient(180deg, rgba(255, 125, 88, 0.92), rgba(189, 55, 34, 0.98));
+      color: #fff8f1;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 22px rgba(255, 105, 54, 0.18);
+    }
+
+    .menu-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .best-score strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 26px;
+      letter-spacing: 0.03em;
+      color: #ffe45c;
+    }
+
+    .menu-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
+      background: rgba(4, 6, 18, 0.72);
+    }
+
+    .panel-card {
+      width: min(100%, 420px);
+      padding: 24px 20px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(12, 16, 36, 0.96), rgba(6, 9, 22, 0.92));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel-title {
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #f8f8ff;
+    }
+
+    .panel-copy,
+    .panel-list {
+      margin-top: 14px;
+      color: var(--subtle);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .panel-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .panel-list li {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .panel-list strong {
+      display: block;
+      color: #f5f7ff;
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .panel-controls {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .panel-row label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #f5f7ff;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .panel-row input[type="range"] {
+      width: 100%;
+      accent-color: #ff7a52;
+    }
+
+    .panel-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .controls {
@@ -364,13 +576,33 @@
       pointer-events: auto;
     }
 
+    .update-banner {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 106px);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: auto;
+      background: linear-gradient(180deg, rgba(13, 18, 37, 0.96), rgba(6, 9, 22, 0.9));
+      border-color: rgba(109, 247, 255, 0.28);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+    }
+
     .install p {
       font-size: 13px;
       color: var(--subtle);
       line-height: 1.35;
     }
 
+    .update-banner p {
+      font-size: 13px;
+      color: var(--subtle);
+      line-height: 1.35;
+    }
+
     .install button,
+    .update-banner button,
     .game-over button {
       min-height: 44px;
       padding: 10px 14px;
@@ -524,6 +756,11 @@
         <button id="installBtn" type="button">Install</button>
       </div>
 
+      <div class="update-banner hidden" id="updateBox">
+        <p>Nueva versión disponible. Recarga para usar la build más reciente.</p>
+        <button id="updateBtn" type="button">Recargar</button>
+      </div>
+
       <div class="orientation-note hidden" id="orientationNote">
         <strong>Rotate Back To Portrait</strong>
         <p>This duel reads best in portrait mode so the road, controls, and enemy attacks stay clear.</p>
@@ -554,6 +791,74 @@
           <span class="attack-label">Slash</span>
         </div>
       </div>
+
+      <div class="start-screen" id="startScreen">
+        <div class="menu-card">
+          <div class="menu-badge">Neon Highway Beta</div>
+          <h1 class="menu-title">Ninja <span>Racer</span></h1>
+          <p class="menu-subtitle">Slash through highway chaos, dodge traffic, and chain stylish kills before the road takes you down.</p>
+
+          <div class="menu-actions">
+            <button class="menu-btn primary" id="startBtn" type="button">Start</button>
+            <button class="menu-btn" id="howToBtn" type="button">How To Play</button>
+            <button class="menu-btn" id="optionsBtn" type="button">Options</button>
+            <button class="menu-btn" id="creditsBtn" type="button">Credits</button>
+          </div>
+
+          <div class="menu-meta">
+            <div class="best-score">Best Score<strong id="bestScoreLabel">0</strong></div>
+            <div class="menu-version">Beta<br><strong id="versionLabel">v0.3</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-panel hidden" id="howToPanel">
+        <div class="panel-card">
+          <h2 class="panel-title">How To Play</h2>
+          <ul class="panel-list">
+            <li><strong>Move</strong>Usa el joystick izquierdo para cambiar de lane y ajustar tu posicion vertical.</li>
+            <li><strong>Attack</strong>Pulsa la espada derecha para lanzar cortes. Si fallas, oiras solo el aire.</li>
+            <li><strong>Combo</strong>Encadena tres ataques para cargar el finisher. El ultimo golpe es corto y preciso.</li>
+            <li><strong>Survive</strong>Evita trafico, espadazos enemigos y choques directos para mantener la racha.</li>
+          </ul>
+          <div class="panel-actions">
+            <button class="panel-btn" data-close-panel="howToPanel" type="button">Back</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-panel hidden" id="optionsPanel">
+        <div class="panel-card">
+          <h2 class="panel-title">Options</h2>
+          <div class="panel-controls">
+            <div class="panel-row">
+              <label for="masterVolume">Master <span id="masterVolumeValue">80%</span></label>
+              <input id="masterVolume" type="range" min="0" max="100" step="1" value="80">
+            </div>
+            <div class="panel-row">
+              <label for="sfxVolume">SFX <span id="sfxVolumeValue">90%</span></label>
+              <input id="sfxVolume" type="range" min="0" max="100" step="1" value="90">
+            </div>
+            <div class="panel-row">
+              <label for="ambienceVolume">Ambience <span id="ambienceVolumeValue">70%</span></label>
+              <input id="ambienceVolume" type="range" min="0" max="100" step="1" value="70">
+            </div>
+          </div>
+          <div class="panel-actions">
+            <button class="panel-btn" data-close-panel="optionsPanel" type="button">Back</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-panel hidden" id="creditsPanel">
+        <div class="panel-card">
+          <h2 class="panel-title">Credits</h2>
+          <p class="panel-copy">Created by Real Aether Productions. Ninja Racer is being shaped as a phone-first action game for fast beta testing, streaming, and feel-driven iteration.</p>
+          <div class="panel-actions">
+            <button class="panel-btn" data-close-panel="creditsPanel" type="button">Back</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -570,11 +875,28 @@
     const restartBtn = document.getElementById("restartBtn");
     const installBox = document.getElementById("installBox");
     const installBtn = document.getElementById("installBtn");
+    const updateBox = document.getElementById("updateBox");
+    const updateBtn = document.getElementById("updateBtn");
     const topbar = document.getElementById("topbar");
     const attackBtn = document.getElementById("attackBtn");
     const orientationNote = document.getElementById("orientationNote");
     const joystickBase = document.getElementById("joystickBase");
     const joystickKnob = document.getElementById("joystickKnob");
+    const startScreen = document.getElementById("startScreen");
+    const startBtn = document.getElementById("startBtn");
+    const howToBtn = document.getElementById("howToBtn");
+    const optionsBtn = document.getElementById("optionsBtn");
+    const creditsBtn = document.getElementById("creditsBtn");
+    const howToPanel = document.getElementById("howToPanel");
+    const optionsPanel = document.getElementById("optionsPanel");
+    const creditsPanel = document.getElementById("creditsPanel");
+    const bestScoreLabel = document.getElementById("bestScoreLabel");
+    const masterVolume = document.getElementById("masterVolume");
+    const sfxVolume = document.getElementById("sfxVolume");
+    const ambienceVolume = document.getElementById("ambienceVolume");
+    const masterVolumeValue = document.getElementById("masterVolumeValue");
+    const sfxVolumeValue = document.getElementById("sfxVolumeValue");
+    const ambienceVolumeValue = document.getElementById("ambienceVolumeValue");
 
     let deferredPrompt = null;
     let view = { w: 0, h: 0, scale: 1 };
@@ -583,6 +905,10 @@
     let lastTime = performance.now();
     let joystickState = { active: false, pointerId: null, x: 0, y: 0 };
     let attackPointerId = null;
+    let refreshingForUpdate = false;
+    let updatePromptShown = false;
+    const menuPanels = [howToPanel, optionsPanel, creditsPanel];
+    const settings = loadSettings();
 
     const NUM_LANES = 4;
     const VEHICLES = [
@@ -592,6 +918,278 @@
       { body: "#52213d", roof: "#8c3569", w: 42, h: 78, glow: "#ff98db" },
       { body: "#4b4b55", roof: "#7c7d89", w: 52, h: 110, glow: "#fcf1b2" }
     ];
+
+    const audioState = {
+      ctx: null,
+      master: null,
+      music: null,
+      sfx: null,
+      ambience: null,
+      ready: false,
+      engineOsc: null,
+      engineGain: null,
+      engineLfo: null,
+      engineLfoGain: null,
+      trafficNoise: null,
+      trafficFilter: null,
+      trafficGain: null,
+      roadPulse: 0
+    };
+
+    function loadSettings() {
+      try {
+        const stored = JSON.parse(localStorage.getItem("ninja-racer-settings") || "{}");
+        return {
+          master: typeof stored.master === "number" ? stored.master : 0.8,
+          sfx: typeof stored.sfx === "number" ? stored.sfx : 0.9,
+          ambience: typeof stored.ambience === "number" ? stored.ambience : 0.7
+        };
+      } catch {
+        return { master: 0.8, sfx: 0.9, ambience: 0.7 };
+      }
+    }
+
+    function saveSettings() {
+      localStorage.setItem("ninja-racer-settings", JSON.stringify(settings));
+    }
+
+    function loadBestScore() {
+      return Number(localStorage.getItem("ninja-racer-best-score") || 0);
+    }
+
+    function updateBestScoreLabel() {
+      bestScoreLabel.textContent = Math.floor(loadBestScore());
+    }
+
+    function ensureAudio() {
+      if (audioState.ready) {
+        if (audioState.ctx.state === "suspended") {
+          audioState.ctx.resume().catch(() => {});
+        }
+        return;
+      }
+
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+
+      const ctx = new AudioCtx();
+      const master = ctx.createGain();
+      const ambience = ctx.createGain();
+      const music = ctx.createGain();
+      const sfx = ctx.createGain();
+
+      master.gain.value = 0.8;
+      ambience.gain.value = 0.7;
+      music.gain.value = 0.7;
+      sfx.gain.value = 0.9;
+
+      ambience.connect(master);
+      music.connect(master);
+      sfx.connect(master);
+      master.connect(ctx.destination);
+
+      const engineOsc = ctx.createOscillator();
+      const engineGain = ctx.createGain();
+      const engineLfo = ctx.createOscillator();
+      const engineLfoGain = ctx.createGain();
+      engineOsc.type = "sawtooth";
+      engineOsc.frequency.value = 74;
+      engineGain.gain.value = 0.0001;
+      engineLfo.type = "sine";
+      engineLfo.frequency.value = 3.1;
+      engineLfoGain.gain.value = 2.4;
+      engineLfo.connect(engineLfoGain);
+      engineLfoGain.connect(engineOsc.frequency);
+      engineOsc.connect(engineGain);
+      engineGain.connect(ambience);
+      engineOsc.start();
+      engineLfo.start();
+
+      const trafficNoise = ctx.createBufferSource();
+      trafficNoise.buffer = createNoiseBuffer(ctx, 2.2);
+      trafficNoise.loop = true;
+      const trafficFilter = ctx.createBiquadFilter();
+      trafficFilter.type = "bandpass";
+      trafficFilter.frequency.value = 520;
+      trafficFilter.Q.value = 0.7;
+      const trafficGain = ctx.createGain();
+      trafficGain.gain.value = 0.0001;
+      trafficNoise.connect(trafficFilter);
+      trafficFilter.connect(trafficGain);
+      trafficGain.connect(ambience);
+      trafficNoise.start();
+
+      audioState.ctx = ctx;
+      audioState.master = master;
+      audioState.music = music;
+      audioState.sfx = sfx;
+      audioState.ambience = ambience;
+      audioState.engineOsc = engineOsc;
+      audioState.engineGain = engineGain;
+      audioState.engineLfo = engineLfo;
+      audioState.engineLfoGain = engineLfoGain;
+      audioState.trafficNoise = trafficNoise;
+      audioState.trafficFilter = trafficFilter;
+      audioState.trafficGain = trafficGain;
+      audioState.ready = true;
+
+      applyAudioSettings();
+      ctx.resume().catch(() => {});
+    }
+
+    function applyAudioSettings() {
+      if (audioState.master) audioState.master.gain.value = settings.master;
+      if (audioState.sfx) audioState.sfx.gain.value = settings.sfx;
+      if (audioState.ambience) audioState.ambience.gain.value = settings.ambience;
+
+      masterVolume.value = String(Math.round(settings.master * 100));
+      sfxVolume.value = String(Math.round(settings.sfx * 100));
+      ambienceVolume.value = String(Math.round(settings.ambience * 100));
+      masterVolumeValue.textContent = `${Math.round(settings.master * 100)}%`;
+      sfxVolumeValue.textContent = `${Math.round(settings.sfx * 100)}%`;
+      ambienceVolumeValue.textContent = `${Math.round(settings.ambience * 100)}%`;
+    }
+
+    function createNoiseBuffer(ctx, duration) {
+      const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * duration), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i += 1) {
+        data[i] = (Math.random() * 2 - 1) * 0.7;
+      }
+      return buffer;
+    }
+
+    function createNoiseSource(duration = 0.24) {
+      const source = audioState.ctx.createBufferSource();
+      source.buffer = createNoiseBuffer(audioState.ctx, duration);
+      return source;
+    }
+
+    function scheduleGain(gainNode, value, time, ramp = 0.08) {
+      gainNode.gain.cancelScheduledValues(time);
+      gainNode.gain.setValueAtTime(Math.max(0.0001, gainNode.gain.value), time);
+      gainNode.gain.exponentialRampToValueAtTime(Math.max(0.0001, value), time + ramp);
+    }
+
+    function playSwordWhoosh() {
+      if (!audioState.ready) return;
+      const now = audioState.ctx.currentTime;
+      const noise = createNoiseSource(0.22);
+      const filter = audioState.ctx.createBiquadFilter();
+      const gain = audioState.ctx.createGain();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(1200, now);
+      filter.frequency.exponentialRampToValueAtTime(420, now + 0.18);
+      filter.Q.value = 2.4;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.09, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioState.sfx);
+      noise.start(now);
+      noise.stop(now + 0.24);
+    }
+
+    function playSwordHit(finisher = false, perfect = false) {
+      if (!audioState.ready) return;
+      const now = audioState.ctx.currentTime;
+
+      const osc = audioState.ctx.createOscillator();
+      const oscGain = audioState.ctx.createGain();
+      osc.type = finisher ? "sawtooth" : "triangle";
+      osc.frequency.setValueAtTime(finisher ? 360 : 520, now);
+      osc.frequency.exponentialRampToValueAtTime(finisher ? 120 : 220, now + (finisher ? 0.28 : 0.16));
+      oscGain.gain.setValueAtTime(0.0001, now);
+      oscGain.gain.exponentialRampToValueAtTime(finisher ? 0.12 : 0.08, now + 0.01);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + (finisher ? 0.28 : 0.16));
+      osc.connect(oscGain);
+      oscGain.connect(audioState.sfx);
+      osc.start(now);
+      osc.stop(now + (finisher ? 0.3 : 0.18));
+
+      const noise = createNoiseSource(finisher ? 0.4 : 0.18);
+      const filter = audioState.ctx.createBiquadFilter();
+      const gain = audioState.ctx.createGain();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(finisher ? 1800 : 2400, now);
+      filter.frequency.exponentialRampToValueAtTime(finisher ? 620 : 980, now + (finisher ? 0.28 : 0.14));
+      filter.Q.value = finisher ? 1.8 : 2.5;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(finisher ? 0.18 : 0.11, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + (finisher ? 0.34 : 0.18));
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioState.sfx);
+      noise.start(now);
+      noise.stop(now + (finisher ? 0.4 : 0.2));
+
+      if (finisher) {
+        audioState.roadPulse = perfect ? 1 : Math.max(audioState.roadPulse, 0.65);
+
+        const echo = audioState.ctx.createDelay(0.22);
+        const feedback = audioState.ctx.createGain();
+        const wet = audioState.ctx.createGain();
+        echo.delayTime.value = 0.12;
+        feedback.gain.value = 0.22;
+        wet.gain.value = 0.08;
+        gain.connect(echo);
+        echo.connect(feedback);
+        feedback.connect(echo);
+        echo.connect(wet);
+        wet.connect(audioState.sfx);
+
+        const rumble = audioState.ctx.createOscillator();
+        const rumbleGain = audioState.ctx.createGain();
+        rumble.type = "sine";
+        rumble.frequency.setValueAtTime(perfect ? 56 : 62, now);
+        rumbleGain.gain.setValueAtTime(0.0001, now);
+        rumbleGain.gain.exponentialRampToValueAtTime(perfect ? 0.09 : 0.06, now + 0.02);
+        rumbleGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+        rumble.connect(rumbleGain);
+        rumbleGain.connect(audioState.sfx);
+        rumble.start(now + 0.015);
+        rumble.stop(now + 0.38);
+      }
+    }
+
+    function playDamageHit() {
+      if (!audioState.ready) return;
+      const now = audioState.ctx.currentTime;
+      const osc = audioState.ctx.createOscillator();
+      const gain = audioState.ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(180, now);
+      osc.frequency.exponentialRampToValueAtTime(78, now + 0.18);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      osc.connect(gain);
+      gain.connect(audioState.sfx);
+      osc.start(now);
+      osc.stop(now + 0.22);
+    }
+
+    function updateAudio(delta) {
+      if (!audioState.ready || !audioState.ctx) return;
+      const now = audioState.ctx.currentTime;
+      const speedNorm = Math.min(1, state.speed / 10.6);
+      const trafficNorm = Math.min(1, state.traffic.length / 8);
+      const dangerNorm = Math.min(1, state.enemies.length / 7);
+
+      audioState.engineOsc.frequency.setTargetAtTime(72 + speedNorm * 36, now, 0.08);
+      audioState.engineLfo.frequency.setTargetAtTime(2.8 + speedNorm * 2.2, now, 0.12);
+      audioState.engineGain.gain.setTargetAtTime(0.018 + speedNorm * 0.022, now, 0.14);
+      audioState.trafficFilter.frequency.setTargetAtTime(420 + trafficNorm * 520 + dangerNorm * 120, now, 0.2);
+      audioState.trafficGain.gain.setTargetAtTime(0.015 + trafficNorm * 0.03 + speedNorm * 0.01, now, 0.16);
+
+      if (audioState.roadPulse > 0.001) {
+        audioState.roadPulse *= Math.max(0, 1 - delta * 3.8);
+        audioState.master.gain.setTargetAtTime(0.8 + audioState.roadPulse * 0.06, now, 0.04);
+      } else {
+        audioState.master.gain.setTargetAtTime(0.8, now, 0.08);
+      }
+    }
 
     // ========== CLIP MOMENT SYSTEM ==========
     // Moment Director tracks game tension and orchestrates clip windows
@@ -850,8 +1448,9 @@
 
     function resetGame() {
       const r = road();
+      resetJoystick();
       state = {
-        mode: "playing",
+        mode: "menu",
         frame: 0,
         score: 0,
         speed: 4.2,
@@ -886,12 +1485,56 @@
           wobble: 0,
           dead: false,
           auraIntensity: 0,      // combo aura
+          laneStickCooldown: 0,
+          laneStickArmed: true,
         },
         director: createMomentDirector()
       };
       syncHud();
       gameOverBox.classList.add("hidden");
+      tipBox.classList.add("hidden");
+    }
+
+    function setMenuMode() {
+      if (!state.player) {
+        resetGame();
+      }
+      state.mode = "menu";
+      state.player.dead = false;
+      state.player.inv = 0;
+      state.player.attacking = 0;
+      state.player.attackTimer = 0;
+      state.player.hitFlash = 0;
+      state.shake = 0;
+      state.hitstop = 0;
+      state.hitstopQueue = [];
+      resetJoystick();
+      app.classList.add("menu-active");
+      startScreen.classList.remove("hidden");
+      hideMenuPanels();
+      tipBox.classList.add("hidden");
+      gameOverBox.classList.add("hidden");
+      updateBestScoreLabel();
+    }
+
+    function startGame() {
+      ensureAudio();
+      resetGame();
+      state.mode = "playing";
+      app.classList.remove("menu-active");
+      startScreen.classList.add("hidden");
+      hideMenuPanels();
       tipBox.classList.remove("hidden");
+      updateBestScoreLabel();
+    }
+
+    function hideMenuPanels() {
+      menuPanels.forEach((panel) => panel.classList.add("hidden"));
+    }
+
+    function openMenuPanel(panel) {
+      hideMenuPanels();
+      panel.classList.remove("hidden");
     }
 
     function syncHud() {
@@ -940,6 +1583,10 @@
       joystickState.pointerId = null;
       joystickState.x = 0;
       joystickState.y = 0;
+      if (state.player) {
+        state.player.laneStickArmed = true;
+        state.player.laneStickCooldown = 0;
+      }
       setJoystickVisual();
     }
 
@@ -961,22 +1608,30 @@
       if (!joystickState.active || state.player.dead || state.mode === "dead") return;
 
       const deadzone = 0.22;
-      const laneThreshold = 0.44;
+      const laneTriggerThreshold = 0.68;
+      const laneReleaseThreshold = 0.26;
       const verticalStrength = Math.abs(joystickState.y) > deadzone ? joystickState.y : 0;
+      const horizontalStrength = joystickState.x;
 
-      if (Math.abs(joystickState.x) > laneThreshold) {
-        state.player.laneStickCooldown = Math.max(0, (state.player.laneStickCooldown || 0) - delta * 60);
-        if ((state.player.laneStickCooldown || 0) <= 0) {
-          moveLane(joystickState.x > 0 ? 1 : -1);
-          state.player.laneStickCooldown = 8;
-        }
-      } else {
-        state.player.laneStickCooldown = 0;
+      state.player.laneStickCooldown = Math.max(0, (state.player.laneStickCooldown || 0) - delta * 60);
+
+      if (Math.abs(horizontalStrength) <= laneReleaseThreshold) {
+        state.player.laneStickArmed = true;
+      }
+
+      if (
+        state.player.laneStickArmed &&
+        state.player.laneStickCooldown <= 0 &&
+        Math.abs(horizontalStrength) >= laneTriggerThreshold
+      ) {
+        moveLane(horizontalStrength > 0 ? 1 : -1);
+        state.player.laneStickCooldown = 12;
+        state.player.laneStickArmed = false;
       }
 
       if (verticalStrength !== 0) {
         const r = road();
-        const verticalSpeed = view.h * 0.34;
+        const verticalSpeed = view.h * 0.3;
         state.player.targetY = Math.max(
           r.playerMinY,
           Math.min(r.playerMaxY, state.player.targetY + verticalStrength * verticalSpeed * delta)
@@ -1083,6 +1738,7 @@
     function attack() {
       const player = state.player;
       if (state.hitstop > 0 || player.dead) return;
+      playSwordWhoosh();
 
       const finisher = state.comboStage === 2;
       const range = view.h * 0.28;
@@ -1165,6 +1821,7 @@
       }
 
       if (hits > 0) {
+        playSwordHit(finisher, isPerfect);
         const scoreMulti = isPerfect ? 20 : finisher ? 12 : 5;
         state.combo += hits;
         state.comboStage = finisher ? 0 : Math.min(2, state.comboStage + 1);
@@ -1297,6 +1954,7 @@
     function damagePlayer() {
       const player = state.player;
       if (player.dead || player.inv > 0) return;
+      playDamageHit();
       player.hp -= 1;
       player.inv = 72;
       player.wobble = 7;
@@ -1312,6 +1970,9 @@
       if (player.hp <= 0) {
         player.dead = true;
         state.mode = "dead";
+        const best = Math.max(loadBestScore(), Math.floor(state.score));
+        localStorage.setItem("ninja-racer-best-score", String(best));
+        updateBestScoreLabel();
         gameOverText.textContent = `Score: ${Math.floor(state.score)}`;
         gameOverBox.classList.remove("hidden");
       }
@@ -1323,8 +1984,15 @@
     }
 
     function update(delta) {
-      if (!state.player || state.mode === "dead") return;
+      if (!state.player) return;
       state.frame += delta * 60;
+      if (state.mode !== "playing") {
+        state.player.wobble *= 0.92;
+        updateAudio(delta);
+        syncHud();
+        return;
+      }
+
       state.score += delta * 2.2;
       state.speed = Math.min(4.2 + state.score / 140, 10.6);
 
@@ -1494,6 +2162,7 @@
       if (state.shake > 0) state.shake *= 0.82;
 
       applyJoystick(delta);
+      updateAudio(delta);
       syncHud();
     }
 
@@ -2048,8 +2717,12 @@
     }
 
     function handleAction(action) {
+      if (state.mode === "menu" || !state.mode) {
+        if (action === "start") startGame();
+        return;
+      }
       if (state.mode === "dead" && action !== "restart") {
-        resetGame();
+        setMenuMode();
         return;
       }
       if (action === "left") moveLane(-1);
@@ -2057,12 +2730,23 @@
       if (action === "up") moveY(-1);
       if (action === "down") moveY(1);
       if (action === "attack") attack();
-      if (action === "restart") resetGame();
+      if (action === "restart") setMenuMode();
+    }
+
+    function showUpdatePrompt() {
+      if (updatePromptShown) return;
+      updatePromptShown = true;
+      updateBox.classList.remove("hidden");
     }
 
     window.addEventListener("keydown", (event) => {
+      ensureAudio();
       if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "z", "x", "Enter"].includes(event.key)) {
         event.preventDefault();
+      }
+      if (event.key === "Enter" && state.mode === "menu") {
+        startGame();
+        return;
       }
       if (event.key === "ArrowLeft") handleAction("left");
       if (event.key === "ArrowRight") handleAction("right");
@@ -2074,6 +2758,7 @@
 
     canvas.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "mouse") return;
+      ensureAudio();
       pointerStart = { x: event.clientX, y: event.clientY };
     });
 
@@ -2101,6 +2786,7 @@
 
     joystickBase.addEventListener("pointerdown", (event) => {
       if (joystickState.pointerId !== null) return;
+      ensureAudio();
       joystickState.active = true;
       joystickState.pointerId = event.pointerId;
       joystickBase.setPointerCapture(event.pointerId);
@@ -2126,6 +2812,7 @@
     joystickBase.addEventListener("pointercancel", endJoystickPointer);
 
     attackBtn.addEventListener("pointerdown", (event) => {
+      ensureAudio();
       attackPointerId = event.pointerId;
       attackBtn.setPointerCapture(event.pointerId);
       handleAction("attack");
@@ -2159,6 +2846,7 @@
     });
 
     installBtn.addEventListener("click", async () => {
+      ensureAudio();
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
@@ -2166,18 +2854,74 @@
       installBox.classList.add("hidden");
     });
 
+    updateBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    startBtn.addEventListener("click", () => startGame());
+    howToBtn.addEventListener("click", () => openMenuPanel(howToPanel));
+    optionsBtn.addEventListener("click", () => openMenuPanel(optionsPanel));
+    creditsBtn.addEventListener("click", () => openMenuPanel(creditsPanel));
+
+    document.querySelectorAll("[data-close-panel]").forEach((button) => {
+      button.addEventListener("click", () => hideMenuPanels());
+    });
+
+    masterVolume.addEventListener("input", () => {
+      settings.master = Number(masterVolume.value) / 100;
+      applyAudioSettings();
+      saveSettings();
+      ensureAudio();
+    });
+
+    sfxVolume.addEventListener("input", () => {
+      settings.sfx = Number(sfxVolume.value) / 100;
+      applyAudioSettings();
+      saveSettings();
+      ensureAudio();
+    });
+
+    ambienceVolume.addEventListener("input", () => {
+      settings.ambience = Number(ambienceVolume.value) / 100;
+      applyAudioSettings();
+      saveSettings();
+      ensureAudio();
+    });
+
     if (window.matchMedia("(display-mode: standalone)").matches) {
       installBox.classList.add("hidden");
     }
 
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshingForUpdate) return;
+        refreshingForUpdate = true;
+        showUpdatePrompt();
+      });
+
+      window.addEventListener("load", async () => {
+        try {
+          const reg = await navigator.serviceWorker.register("./sw.js");
+          reg.update().catch(() => {});
+
+          reg.addEventListener("updatefound", () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+
+            newWorker.addEventListener("statechange", () => {
+              if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                showUpdatePrompt();
+              }
+            });
+          });
+        } catch (_) {}
       });
     }
 
+    applyAudioSettings();
     resize();
     resetGame();
+    setMenuMode();
     requestAnimationFrame(frame);
   </script>
 </body>
