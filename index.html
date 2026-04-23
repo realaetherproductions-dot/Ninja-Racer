@@ -217,16 +217,16 @@
 
     .controls {
       bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-      padding: 10px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
       pointer-events: auto;
-      background: linear-gradient(180deg, rgba(6, 9, 22, 0.76), rgba(3, 5, 16, 0.88));
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      background: none;
+      border: 0;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
-    .controls button,
     .install button,
     .orientation-note button,
     .game-over button {
@@ -244,35 +244,114 @@
       transition: transform 120ms ease, box-shadow 140ms ease, background 160ms ease;
     }
 
-    .controls button.attack {
-      background: linear-gradient(180deg, rgba(255, 112, 77, 0.82), rgba(181, 53, 35, 0.96));
-      color: #fff7ea;
-      transition: box-shadow 0.2s ease;
+    .joystick-shell,
+    .attack-cluster {
+      position: relative;
+      pointer-events: auto;
     }
 
-    .controls button:active,
+    .joystick-shell {
+      width: min(38vw, 158px);
+      height: min(38vw, 158px);
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(110, 128, 255, 0.18), rgba(15, 18, 43, 0.7) 64%, rgba(4, 6, 18, 0.92) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      touch-action: none;
+    }
+
+    .joystick-shell::before,
+    .joystick-shell::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border-radius: 999px;
+    }
+
+    .joystick-shell::before {
+      width: 74%;
+      height: 74%;
+      border: 1px solid rgba(109, 247, 255, 0.09);
+    }
+
+    .joystick-shell::after {
+      width: 34%;
+      height: 34%;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+
+    .joystick-knob {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 40%;
+      height: 40%;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.28), rgba(121, 145, 255, 0.2) 30%, rgba(34, 42, 92, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(109, 247, 255, 0.12);
+      pointer-events: none;
+      transition: transform 80ms linear;
+    }
+
+    .joystick-label,
+    .attack-label {
+      position: absolute;
+      left: 50%;
+      bottom: -22px;
+      transform: translateX(-50%);
+      color: rgba(230, 235, 255, 0.68);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .attack-cluster {
+      width: min(28vw, 118px);
+      height: min(28vw, 118px);
+    }
+
+    .attack-button {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.2), rgba(255, 138, 88, 0.16) 28%, rgba(152, 35, 24, 0.96) 100%);
+      color: #fff7ea;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 34px rgba(0, 0, 0, 0.35), 0 0 26px rgba(255, 105, 54, 0.24);
+      display: grid;
+      place-items: center;
+      touch-action: manipulation;
+      transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
+    }
+
+    .attack-button svg {
+      width: 42%;
+      height: 42%;
+      fill: none;
+      stroke: #fff8ef;
+      stroke-width: 16;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 8px rgba(255, 231, 187, 0.35));
+    }
+
+    .attack-button:active,
     .install button:active,
     .game-over button:active {
       transform: translateY(1px) scale(0.985);
     }
 
-    .controls button .button-main {
-      display: block;
-      font-size: clamp(14px, 3vw, 18px);
-      letter-spacing: 0.08em;
-    }
-
-    .controls button .button-sub {
-      display: block;
-      margin-top: 4px;
-      font-size: 10px;
-      color: rgba(230, 235, 255, 0.72);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .controls button.attack.finisher-glow {
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 22px rgba(255, 105, 54, 0.6);
+    .attack-button.finisher-glow {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 34px rgba(0, 0, 0, 0.35), 0 0 30px rgba(255, 105, 54, 0.8);
+      filter: saturate(1.08);
     }
 
     .install {
@@ -378,12 +457,17 @@
     }
 
     #app.compact .controls {
-      gap: 7px;
-      padding: 8px;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
     }
 
-    #app.compact .controls button .button-main {
-      font-size: 13px;
+    #app.compact .joystick-shell {
+      width: min(34vw, 136px);
+      height: min(34vw, 136px);
+    }
+
+    #app.compact .attack-cluster {
+      width: min(24vw, 102px);
+      height: min(24vw, 102px);
     }
 
     #app.landscape .brand,
@@ -452,12 +536,23 @@
       </div>
 
       <div class="controls">
-        <button type="button" data-action="left"><span class="button-main">LEFT</span><span class="button-sub">lane</span></button>
-        <button type="button" data-action="attack" class="attack" id="atkBtn1"><span class="button-main">ATTACK</span><span class="button-sub">tap</span></button>
-        <button type="button" data-action="right"><span class="button-main">RIGHT</span><span class="button-sub">lane</span></button>
-        <button type="button" data-action="up"><span class="button-main">UP</span><span class="button-sub">climb</span></button>
-        <button type="button" data-action="down"><span class="button-main">DOWN</span><span class="button-sub">drop</span></button>
-        <button type="button" data-action="attack" class="attack" id="atkBtn2"><span class="button-main">SLASH</span><span class="button-sub">combo</span></button>
+        <div class="joystick-shell" id="joystickBase" aria-label="Movement joystick">
+          <div class="joystick-knob" id="joystickKnob"></div>
+          <span class="joystick-label">Move</span>
+        </div>
+        <div class="attack-cluster">
+          <button type="button" class="attack-button" id="attackBtn" aria-label="Attack">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <path d="M58 18 L74 34"></path>
+              <path d="M70 22 L78 30"></path>
+              <path d="M40 56 L70 26"></path>
+              <path d="M34 62 L46 50"></path>
+              <path d="M28 68 L34 74"></path>
+              <path d="M22 74 L30 82"></path>
+            </svg>
+          </button>
+          <span class="attack-label">Slash</span>
+        </div>
       </div>
     </section>
   </main>
@@ -476,15 +571,18 @@
     const installBox = document.getElementById("installBox");
     const installBtn = document.getElementById("installBtn");
     const topbar = document.getElementById("topbar");
-    const atkBtn1 = document.getElementById("atkBtn1");
-    const atkBtn2 = document.getElementById("atkBtn2");
+    const attackBtn = document.getElementById("attackBtn");
     const orientationNote = document.getElementById("orientationNote");
+    const joystickBase = document.getElementById("joystickBase");
+    const joystickKnob = document.getElementById("joystickKnob");
 
     let deferredPrompt = null;
     let view = { w: 0, h: 0, scale: 1 };
     let state = {};
     let pointerStart = null;
     let lastTime = performance.now();
+    let joystickState = { active: false, pointerId: null, x: 0, y: 0 };
+    let attackPointerId = null;
 
     const NUM_LANES = 4;
     const VEHICLES = [
@@ -806,14 +904,12 @@
       // Combo escalation readability in HUD
       comboLabel.className = "";
       topbar.className = "topbar";
-      atkBtn1.classList.remove("finisher-glow");
-      atkBtn2.classList.remove("finisher-glow");
+      attackBtn.classList.remove("finisher-glow");
 
       if (state.comboStage === 2) {
         comboLabel.classList.add("finisher-ready");
         topbar.classList.add("combo-fire");
-        atkBtn1.classList.add("finisher-glow");
-        atkBtn2.classList.add("finisher-glow");
+        attackBtn.classList.add("finisher-glow");
       } else if (state.comboStage === 1) {
         comboLabel.classList.add("stage2");
         topbar.classList.add("combo-hot");
@@ -832,6 +928,60 @@
       const r = road();
       const step = view.h * 0.09;
       state.player.targetY = Math.max(r.playerMinY, Math.min(r.playerMaxY, state.player.targetY + dir * step));
+    }
+
+    function setJoystickVisual() {
+      const maxTravel = joystickBase.clientWidth * 0.24;
+      joystickKnob.style.transform = `translate(calc(-50% + ${joystickState.x * maxTravel}px), calc(-50% + ${joystickState.y * maxTravel}px))`;
+    }
+
+    function resetJoystick() {
+      joystickState.active = false;
+      joystickState.pointerId = null;
+      joystickState.x = 0;
+      joystickState.y = 0;
+      setJoystickVisual();
+    }
+
+    function updateJoystickFromEvent(event) {
+      const rect = joystickBase.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = event.clientX - centerX;
+      const dy = event.clientY - centerY;
+      const max = rect.width * 0.32;
+      const len = Math.hypot(dx, dy) || 1;
+      const clamp = Math.min(len, max);
+      joystickState.x = (dx / len) * (clamp / max);
+      joystickState.y = (dy / len) * (clamp / max);
+      setJoystickVisual();
+    }
+
+    function applyJoystick(delta) {
+      if (!joystickState.active || state.player.dead || state.mode === "dead") return;
+
+      const deadzone = 0.22;
+      const laneThreshold = 0.44;
+      const verticalStrength = Math.abs(joystickState.y) > deadzone ? joystickState.y : 0;
+
+      if (Math.abs(joystickState.x) > laneThreshold) {
+        state.player.laneStickCooldown = Math.max(0, (state.player.laneStickCooldown || 0) - delta * 60);
+        if ((state.player.laneStickCooldown || 0) <= 0) {
+          moveLane(joystickState.x > 0 ? 1 : -1);
+          state.player.laneStickCooldown = 8;
+        }
+      } else {
+        state.player.laneStickCooldown = 0;
+      }
+
+      if (verticalStrength !== 0) {
+        const r = road();
+        const verticalSpeed = view.h * 0.34;
+        state.player.targetY = Math.max(
+          r.playerMinY,
+          Math.min(r.playerMaxY, state.player.targetY + verticalStrength * verticalSpeed * delta)
+        );
+      }
     }
 
     function addParticles(x, y, color, count, power = 4.5) {
@@ -1250,6 +1400,7 @@
       }
 
       const player = state.player;
+      if (player.laneStickCooldown > 0) player.laneStickCooldown -= delta * 60;
       player.x += (laneX(player.targetLane) - player.x) * 0.18;
       player.y += (player.targetY - player.y) * 0.16;
       player.lane = player.targetLane;
@@ -1342,6 +1493,7 @@
       state.slashes = state.slashes.filter((s) => s.life > 0);
       if (state.shake > 0) state.shake *= 0.82;
 
+      applyJoystick(delta);
       syncHud();
     }
 
@@ -1921,10 +2073,12 @@
     }, { passive: false });
 
     canvas.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse") return;
       pointerStart = { x: event.clientX, y: event.clientY };
     });
 
     canvas.addEventListener("pointerup", (event) => {
+      if (event.pointerType !== "mouse") return;
       if (!pointerStart) return;
       const dx = event.clientX - pointerStart.x;
       const dy = event.clientY - pointerStart.y;
@@ -1945,9 +2099,49 @@
       pointerStart = null;
     });
 
-    document.querySelectorAll("[data-action]").forEach((button) => {
-      button.addEventListener("click", () => handleAction(button.dataset.action));
+    joystickBase.addEventListener("pointerdown", (event) => {
+      if (joystickState.pointerId !== null) return;
+      joystickState.active = true;
+      joystickState.pointerId = event.pointerId;
+      joystickBase.setPointerCapture(event.pointerId);
+      updateJoystickFromEvent(event);
+      event.preventDefault();
     });
+
+    joystickBase.addEventListener("pointermove", (event) => {
+      if (!joystickState.active || event.pointerId !== joystickState.pointerId) return;
+      updateJoystickFromEvent(event);
+      event.preventDefault();
+    });
+
+    const endJoystickPointer = (event) => {
+      if (event.pointerId !== joystickState.pointerId) return;
+      try {
+        joystickBase.releasePointerCapture(event.pointerId);
+      } catch {}
+      resetJoystick();
+    };
+
+    joystickBase.addEventListener("pointerup", endJoystickPointer);
+    joystickBase.addEventListener("pointercancel", endJoystickPointer);
+
+    attackBtn.addEventListener("pointerdown", (event) => {
+      attackPointerId = event.pointerId;
+      attackBtn.setPointerCapture(event.pointerId);
+      handleAction("attack");
+      event.preventDefault();
+    });
+
+    const endAttackPointer = (event) => {
+      if (event.pointerId !== attackPointerId) return;
+      try {
+        attackBtn.releasePointerCapture(event.pointerId);
+      } catch {}
+      attackPointerId = null;
+    };
+
+    attackBtn.addEventListener("pointerup", endAttackPointer);
+    attackBtn.addEventListener("pointercancel", endAttackPointer);
 
     restartBtn.addEventListener("click", () => handleAction("restart"));
 
