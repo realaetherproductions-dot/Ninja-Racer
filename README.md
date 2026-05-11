@@ -60,3 +60,7 @@ The included `vercel.json` already adds security headers and cache rules.
 2. Confirm install-to-home-screen works.
 3. Check that restart, touch controls, and orientation behavior feel correct.
 4. If you update the service worker often, ask testers to refresh once after new deployments.
+
+## Beta economy note
+
+Crystals, best score, missions, settings, and unlocks are stored locally in the browser for beta testing. Do not treat crystals as paid currency or add a real-money store until the economy is backed by a server-side account/inventory system.

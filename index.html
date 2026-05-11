@@ -152,11 +152,11 @@
       top: calc(env(safe-area-inset-top, 0px) + 18px);
       left: auto;
       right: var(--hud-pad);
-      width: min(50vw, 236px);
+      width: min(76vw, 364px);
       padding: 10px 12px;
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -189,6 +189,26 @@
       text-align: right;
     }
 
+    .stat.grow {
+      flex: 1;
+    }
+
+    .crystal-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 84px;
+    }
+
+    .crystal-icon {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      background: #a78bfa;
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+      filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.38));
+    }
+
     .combo strong {
       color: var(--accent);
     }
@@ -196,6 +216,57 @@
     .combo strong.stage1 { color: #ffe45c; text-shadow: 0 0 8px rgba(255, 228, 92, 0.4); }
     .combo strong.stage2 { color: #6df7ff; text-shadow: 0 0 12px rgba(109, 247, 255, 0.5); }
     .combo strong.finisher-ready { color: #ff6936; text-shadow: 0 0 16px rgba(255, 105, 54, 0.7); font-size: 26px; }
+    .combo.idle strong,
+    .combo.idle small {
+      opacity: 0.28;
+    }
+
+    .combo-popup {
+      position: absolute;
+      left: 50%;
+      top: 36%;
+      transform: translate(-50%, -50%) scale(0.88);
+      min-width: 120px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(33, 17, 10, 0.78), rgba(12, 11, 22, 0.76));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24), 0 0 18px rgba(255, 142, 72, 0.16);
+      backdrop-filter: blur(12px);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 140ms ease, transform 140ms ease;
+      z-index: 3;
+    }
+
+    .combo-popup.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .combo-popup small {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 223, 191, 0.78);
+    }
+
+    .combo-popup strong {
+      display: block;
+      margin-top: 2px;
+      font-size: clamp(30px, 7vw, 42px);
+      line-height: 1;
+      color: #ffb769;
+      text-shadow: 0 0 16px rgba(255, 174, 90, 0.34);
+    }
+
+    .combo-popup.stage1 strong { color: #ffe45c; text-shadow: 0 0 16px rgba(255, 228, 92, 0.34); }
+    .combo-popup.stage2 strong { color: #6df7ff; text-shadow: 0 0 16px rgba(109, 247, 255, 0.42); }
+    .combo-popup.finisher-ready strong { color: #ff6936; text-shadow: 0 0 22px rgba(255, 105, 54, 0.52); }
 
     .tip {
       top: calc(env(safe-area-inset-top, 0px) + 92px);
@@ -249,15 +320,32 @@
     }
 
     .menu-card {
+      position: relative;
+      overflow: hidden;
       width: min(100%, 420px);
       padding: 28px 22px 24px;
       border-radius: 28px;
       background:
-        linear-gradient(180deg, rgba(11, 14, 33, 0.9), rgba(6, 9, 22, 0.8)),
+        radial-gradient(circle at top right, rgba(255, 163, 89, 0.16), transparent 34%),
+        linear-gradient(180deg, rgba(20, 11, 18, 0.96), rgba(8, 10, 24, 0.86)),
         linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 210, 168, 0.14);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38), 0 0 26px rgba(255, 124, 70, 0.12);
       backdrop-filter: blur(16px);
+    }
+
+    .menu-card::before,
+    .panel-card::before,
+    .game-over::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(255, 191, 120, 0.16), transparent 20%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 16%, transparent 82%, rgba(255, 126, 74, 0.08));
+      mix-blend-mode: screen;
+      opacity: 0.88;
     }
 
     .menu-badge,
@@ -274,30 +362,43 @@
       margin-bottom: 12px;
       padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(109, 247, 255, 0.18);
-      background: rgba(109, 247, 255, 0.06);
-      color: #b9fbff;
+      border: 1px solid rgba(255, 203, 140, 0.26);
+      background: linear-gradient(180deg, rgba(255, 167, 92, 0.14), rgba(255, 105, 54, 0.08));
+      color: #ffd9a9;
+      text-shadow: 0 0 12px rgba(255, 150, 84, 0.18);
     }
 
     .menu-title {
+      position: relative;
+      display: inline-block;
       font-size: clamp(42px, 12vw, 72px);
       line-height: 0.9;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: #f8f8ff;
-      text-shadow: 0 0 18px rgba(109, 247, 255, 0.12);
+      color: #fff5ef;
+      text-shadow: 0 2px 0 rgba(41, 10, 0, 0.85), 0 0 18px rgba(255, 141, 78, 0.18);
     }
 
     .menu-title span {
       display: block;
-      color: #ff7a52;
-      text-shadow: 0 0 18px rgba(255, 122, 82, 0.18);
+      color: #ff8e56;
+      text-shadow: 0 2px 0 rgba(64, 12, 0, 0.75), 0 0 22px rgba(255, 122, 82, 0.28);
+    }
+
+    .menu-title::after {
+      content: "NEON KATANA CHASE";
+      display: block;
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      color: rgba(255, 224, 186, 0.72);
+      text-shadow: none;
     }
 
     .menu-subtitle {
       margin-top: 12px;
-      color: var(--subtle);
-      line-height: 1.5;
+      color: #d5c2bb;
+      line-height: 1.58;
       font-size: 14px;
       max-width: 32ch;
     }
@@ -311,22 +412,36 @@
     .menu-btn,
     .panel-btn {
       appearance: none;
-      border: 0;
+      border: 1px solid rgba(255, 214, 180, 0.08);
       border-radius: 18px;
       min-height: 54px;
       font: inherit;
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #f5f7ff;
-      background: linear-gradient(180deg, rgba(83, 98, 214, 0.34), rgba(42, 50, 112, 0.66));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      color: #fff7f1;
+      background: linear-gradient(180deg, rgba(71, 53, 118, 0.78), rgba(28, 21, 53, 0.9));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .menu-btn,
+    .panel-btn,
+    .diff-btn,
+    .diff-strip-btn,
+    .mission-fab,
+    .attack-button,
+    .install button,
+    .update-banner button,
+    .game-over button {
+      pointer-events: auto;
+      touch-action: manipulation;
+      cursor: pointer;
     }
 
     .menu-btn.primary {
-      background: linear-gradient(180deg, rgba(255, 125, 88, 0.92), rgba(189, 55, 34, 0.98));
+      background: linear-gradient(180deg, rgba(255, 154, 92, 0.98), rgba(198, 54, 30, 1));
       color: #fff8f1;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 22px rgba(255, 105, 54, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 24px rgba(255, 105, 54, 0.24);
     }
 
     .menu-meta {
@@ -352,13 +467,21 @@
       background: rgba(4, 6, 18, 0.72);
     }
 
+    .menu-card,
+    .panel-card,
+    .game-over {
+      pointer-events: auto;
+    }
+
     .panel-card {
+      position: relative;
+      overflow: hidden;
       width: min(100%, 420px);
       padding: 24px 20px;
       border-radius: 26px;
-      background: linear-gradient(180deg, rgba(12, 16, 36, 0.96), rgba(6, 9, 22, 0.92));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+      background: linear-gradient(180deg, rgba(18, 14, 31, 0.98), rgba(7, 9, 22, 0.94));
+      border: 1px solid rgba(255, 214, 180, 0.1);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34), 0 0 20px rgba(255, 130, 84, 0.08);
       backdrop-filter: blur(16px);
     }
 
@@ -427,6 +550,244 @@
       margin-top: 18px;
     }
 
+    .diff-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .diff-btn {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      min-height: 52px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--subtle);
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .diff-btn strong {
+      display: block;
+      font-size: 13px;
+      color: #f5f7ff;
+    }
+
+    .diff-btn span {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .diff-btn.active-normal {
+      border-color: rgba(29, 186, 138, 0.42);
+      box-shadow: 0 0 18px rgba(29, 186, 138, 0.12);
+    }
+
+    .diff-btn.active-hard {
+      border-color: rgba(255, 105, 54, 0.5);
+      box-shadow: 0 0 20px rgba(255, 105, 54, 0.15);
+    }
+
+    .diff-btn.locked {
+      opacity: 0.45;
+    }
+
+    .mission-fab {
+      position: absolute;
+      right: var(--hud-pad);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 154px);
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
+      border: 1px solid var(--panel-border);
+      background: linear-gradient(180deg, rgba(10, 13, 30, 0.92), rgba(6, 9, 22, 0.82));
+      color: #dfe3ff;
+      font-size: 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .hud-strip {
+      position: absolute;
+      left: var(--hud-pad);
+      right: calc(var(--hud-pad) + 58px);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 154px);
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .diff-strip-btn {
+      flex: 1;
+      appearance: none;
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      min-height: 38px;
+      background: rgba(3, 6, 18, 0.82);
+      color: var(--subtle);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .diff-strip-btn.active-normal {
+      border-color: rgba(29, 186, 138, 0.42);
+      color: #1dba8a;
+      background: rgba(29, 186, 138, 0.08);
+    }
+
+    .diff-strip-btn.active-hard {
+      border-color: rgba(255, 105, 54, 0.46);
+      color: #ff6936;
+      background: rgba(255, 105, 54, 0.08);
+    }
+
+    .diff-strip-btn small {
+      display: block;
+      margin-top: 2px;
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+    }
+
+    .mission-panel {
+      position: absolute;
+      right: var(--hud-pad);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 206px);
+      width: min(320px, calc(100vw - 32px));
+      padding: 14px 14px 12px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(10, 13, 31, 0.98), rgba(5, 8, 20, 0.96));
+      border: 1px solid rgba(167, 139, 250, 0.24);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(16px);
+      pointer-events: auto;
+      z-index: 5;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .mission-panel.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .mission-panel h3 {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 10px;
+    }
+
+    .mission-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .mission-item:last-child {
+      border-bottom: 0;
+    }
+
+    .mission-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+    }
+
+    .mission-check.done {
+      background: #a78bfa;
+      border-color: #a78bfa;
+      color: #0a0520;
+    }
+
+    .mission-text {
+      flex: 1;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #eef0ff;
+    }
+
+    .mission-text small {
+      display: block;
+      margin-top: 3px;
+      color: var(--subtle);
+      font-size: 10px;
+    }
+
+    .mission-progress {
+      font-size: 11px;
+      color: #a78bfa;
+      white-space: nowrap;
+    }
+
+    .mission-bar {
+      margin-top: 5px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .mission-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: #a78bfa;
+    }
+
+    .mission-bonus {
+      padding-top: 8px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--subtle);
+    }
+
+    .toast {
+      position: absolute;
+      top: calc(env(safe-area-inset-top, 0px) + 140px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(167, 139, 250, 0.28), rgba(80, 50, 180, 0.42));
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      backdrop-filter: blur(12px);
+      color: #e8e0ff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 200ms ease, transform 200ms ease, visibility 200ms ease;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
     .controls {
       bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
       display: flex;
@@ -457,9 +818,18 @@
     }
 
     .joystick-shell,
-    .attack-cluster {
+    .action-stack,
+    .attack-cluster,
+    .powerup-cluster {
       position: relative;
       pointer-events: auto;
+    }
+
+    .action-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     .joystick-shell {
@@ -512,7 +882,9 @@
     }
 
     .joystick-label,
-    .attack-label {
+    .attack-label,
+    .powerup-label,
+    .dash-label {
       position: absolute;
       left: 50%;
       bottom: -22px;
@@ -524,12 +896,64 @@
       white-space: nowrap;
     }
 
-    .attack-cluster {
+    .powerup-cluster {
+      width: min(19vw, 82px);
+      height: min(19vw, 82px);
+      transition: opacity 140ms ease, visibility 140ms ease, transform 140ms ease;
+    }
+
+    .powerup-cluster.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      pointer-events: none;
+    }
+
+    .powerup-button {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      width: 100%;
+      height: 100%;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(17, 22, 46, 0.96), rgba(9, 12, 28, 0.92));
+      color: #eff3ff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 26px rgba(0, 0, 0, 0.28);
+      display: grid;
+      place-items: center;
+      padding: 8px 6px;
+      text-align: center;
+      touch-action: manipulation;
+    }
+
+    .powerup-button strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .powerup-button span {
+      display: block;
+      font-size: 9px;
+      line-height: 1.15;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.82;
+    }
+
+    .attack-cluster,
+    .dash-cluster {
       width: min(28vw, 118px);
       height: min(28vw, 118px);
     }
 
-    .attack-button {
+    .dash-cluster {
+      width: min(20vw, 84px);
+      height: min(20vw, 84px);
+    }
+
+    .attack-button,
+    .dash-button {
       appearance: none;
       border: 0;
       width: 100%;
@@ -544,7 +968,18 @@
       transition: transform 120ms ease, box-shadow 140ms ease, filter 140ms ease;
     }
 
-    .attack-button svg {
+    .dash-button {
+      background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.2), rgba(109, 247, 255, 0.16) 28%, rgba(27, 114, 148, 0.96) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 28px rgba(0, 0, 0, 0.32), 0 0 22px rgba(109, 247, 255, 0.24);
+    }
+
+    .dash-button.cooldown {
+      filter: grayscale(0.35) brightness(0.76);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 22px rgba(0, 0, 0, 0.22);
+    }
+
+    .attack-button svg,
+    .dash-button svg {
       width: 42%;
       height: 42%;
       fill: none;
@@ -556,6 +991,7 @@
     }
 
     .attack-button:active,
+    .dash-button:active,
     .install button:active,
     .game-over button:active {
       transform: translateY(1px) scale(0.985);
@@ -650,6 +1086,58 @@
       margin-bottom: 14px;
     }
 
+    .go-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 12px 0 10px;
+    }
+
+    .go-stat {
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      text-align: center;
+    }
+
+    .go-stat small {
+      display: block;
+      color: var(--subtle);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .go-stat strong {
+      font-size: 18px;
+    }
+
+    .go-stat strong.crystal {
+      color: #a78bfa;
+    }
+
+    .go-message {
+      color: #a78bfa;
+      min-height: 18px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .game-over .go-primary {
+      background: linear-gradient(180deg, rgba(255, 125, 88, 0.92), rgba(189, 55, 34, 0.98));
+      color: #fff8f1;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 22px rgba(255, 105, 54, 0.18);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .game-over .go-secondary {
+      background: linear-gradient(180deg, rgba(83, 98, 214, 0.24), rgba(42, 50, 112, 0.46));
+      color: var(--subtle);
+      font-size: 13px;
+    }
+
     @media (min-width: 700px) {
       #app {
         height: min(100dvh, 920px);
@@ -664,7 +1152,7 @@
       }
 
       .topbar {
-        width: min(54vw, 220px);
+        width: min(78vw, 320px);
         gap: 10px;
       }
 
@@ -678,7 +1166,7 @@
     }
 
     #app.compact .topbar {
-      width: min(56vw, 214px);
+      width: min(80vw, 320px);
       padding: 8px 10px;
     }
 
@@ -690,6 +1178,18 @@
 
     #app.compact .controls {
       bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+    }
+
+    #app.compact .hud-strip {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 144px);
+    }
+
+    #app.compact .mission-fab {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 144px);
+    }
+
+    #app.compact .mission-panel {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 194px);
     }
 
     #app.compact .joystick-shell {
@@ -722,6 +1222,590 @@
       visibility: hidden;
       pointer-events: none;
     }
+
+    /* ============================================================
+       ANIME WRAPPER LAYER  (visual-only overrides — no JS changes)
+       Adds ink/cyber palette, manga frame, speed lines, paper shards,
+       chromatic glow, JP typography. All purely cosmetic.
+       ============================================================ */
+
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Russo+One&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Zen+Tokyo+Zoo&display=swap');
+
+    :root {
+      --anime-paper: #67e8f9;           /* electric paper blue */
+      --anime-paper-soft: #c8f7ff;      /* pale cyan ink wash */
+      --anime-cyan: #53e7ff;            /* clean neon cyan */
+      --anime-violet: #5e7cff;          /* arcade blue-violet */
+      --anime-teal: #2dd4bf;            /* teal accent */
+      --anime-gold: #f5c451;            /* coin/crystal gold */
+      --anime-ink: #11102a;
+      --anime-porcelain: #f4ecec;
+    }
+
+    html, body {
+      background:
+        radial-gradient(circle at 18% 12%, rgba(83, 231, 255, 0.07), transparent 35%),
+        radial-gradient(circle at 82% 88%, rgba(94, 124, 255, 0.07), transparent 40%),
+        linear-gradient(180deg, #16162a, #0c0c1c 60%) !important;
+      font-family: 'Zen Kaku Gothic New', 'Trebuchet MS', 'Segoe UI', sans-serif !important;
+    }
+
+    /* === Soft manga frame wrapper for the whole app === */
+    #app {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(83, 231, 255, 0.08), transparent 36%),
+        radial-gradient(circle at 50% 86%, rgba(94, 124, 255, 0.07), transparent 40%),
+        linear-gradient(180deg, rgba(20, 20, 38, 0.96), rgba(10, 10, 24, 1)) !important;
+      box-shadow:
+        0 0 0 1px rgba(83, 231, 255, 0.12),
+        0 18px 50px rgba(0, 0, 0, 0.55) !important;
+    }
+
+    #app::before {
+      background:
+        linear-gradient(135deg,
+          rgba(83, 231, 255, 0.06) 0%,
+          rgba(94, 124, 255, 0.05) 50%,
+          rgba(45, 212, 191, 0.05) 100%) !important;
+      mix-blend-mode: screen !important;
+      animation: animeHoloDrift 22s ease-in-out infinite alternate;
+      opacity: 0.6 !important;
+    }
+
+    #app::after {
+      background:
+        repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.024) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(83, 231, 255, 0.018) 0 2px, transparent 2px 7px) !important;
+      opacity: 0.55 !important;
+    }
+
+    @keyframes animeHoloDrift {
+      0%   { filter: hue-rotate(0deg)  saturate(0.9); opacity: .55; }
+      50%  { filter: hue-rotate(8deg)  saturate(1.0); opacity: .70; }
+      100% { filter: hue-rotate(-6deg) saturate(0.95); opacity: .55; }
+    }
+
+    /* === Decorative anime-fx layer (purely visual, no input capture) === */
+    .anime-fx {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* Manga-style cut corners (subtle, no glow) */
+    .anime-fx .corner {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(200, 247, 255, 0.30);
+      opacity: 0.7;
+    }
+    .anime-fx .corner.tl { top: 10px; left: 10px;   border-right: none; border-bottom: none; border-top-left-radius: 14px; }
+    .anime-fx .corner.tr { top: 10px; right: 10px;  border-left: none;  border-bottom: none; border-top-right-radius: 14px; }
+    .anime-fx .corner.bl { bottom: 10px; left: 10px;   border-right: none; border-top: none; border-bottom-left-radius: 14px; }
+    .anime-fx .corner.br { bottom: 10px; right: 10px;  border-left: none;  border-top: none; border-bottom-right-radius: 14px; }
+    .anime-fx .corner::after { content: none; }
+
+    /* Speed lines (whisper-soft) */
+    .anime-fx .speed-lines {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 26px,
+          rgba(255, 255, 255, 0.025) 26px 27px,
+          transparent 27px 70px);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 50%);
+              mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 50%);
+      mix-blend-mode: screen;
+      opacity: 0.30;
+      animation: animeSpeedShift 10s linear infinite;
+    }
+    @keyframes animeSpeedShift {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-60px); }
+    }
+
+    /* Background kana — barely-there ink wash */
+    .anime-fx .kana {
+      position: absolute;
+      font-family: 'Zen Tokyo Zoo', 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(200, 247, 255, 0.12);
+      letter-spacing: 0.05em;
+      font-size: 84px;
+      line-height: 1;
+      animation: animeKanaFloat 22s ease-in-out infinite alternate;
+    }
+    .anime-fx .kana.k1 { top: 22%; right: -12px; transform: rotate(8deg); }
+    .anime-fx .kana.k2 { top: 58%; left: -8px;  transform: rotate(-6deg); -webkit-text-stroke-color: rgba(142, 197, 212, 0.10); }
+    .anime-fx .kana.k3 { display: none; }
+    @keyframes animeKanaFloat {
+      0%   { transform: translateY(0)    rotate(var(--rot, 0deg)); opacity: .75; }
+      100% { transform: translateY(-12px) rotate(var(--rot, 0deg)); opacity: 1; }
+    }
+
+    /* Anime paper shards — fewer, slower, cooler */
+    .anime-fx .petal {
+      position: absolute;
+      top: -24px;
+      width: 12px;
+      height: 12px;
+      background:
+        radial-gradient(circle at 30% 30%, #e7fbff, #8fdff0 60%, #5e7cff);
+      border-radius: 76% 24% 76% 24% / 24% 76% 24% 76%;
+      opacity: 0.35;
+      animation: animePetalFall linear infinite;
+    }
+    .anime-fx .petal.p1 { left: 14%; width: 10px; height: 10px; animation-duration: 18s; animation-delay: -2s;  }
+    .anime-fx .petal.p3 { left: 38%; width: 11px; height: 11px; animation-duration: 22s; animation-delay: -7s; opacity: 0.30; }
+    .anime-fx .petal.p5 { left: 62%; width: 10px; height: 10px; animation-duration: 20s; animation-delay: -3s; opacity: 0.30; }
+    .anime-fx .petal.p7 { left: 84%; width: 11px; height: 11px; animation-duration: 24s; animation-delay: -11s; }
+    .anime-fx .petal.p2,
+    .anime-fx .petal.p4,
+    .anime-fx .petal.p6,
+    .anime-fx .petal.p8 { display: none; }
+    @keyframes animePetalFall {
+      0%   { transform: translate3d(0, -10vh, 0) rotate(0deg);   opacity: 0; }
+      8%   { opacity: .8; }
+      100% { transform: translate3d(40px, 110vh, 0) rotate(540deg); opacity: 0; }
+    }
+
+    /* Sparkles — disabled in the calmer pass */
+    .anime-fx .spark { display: none; }
+
+    /* Subtle dashed ring */
+    .anime-fx .ring {
+      position: absolute;
+      inset: 6px;
+      border-radius: 22px;
+      border: 1px dashed rgba(200, 247, 255, 0.12);
+      opacity: 0.5;
+    }
+
+    /* === BRAND / TITLE === */
+    .brand {
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.85), rgba(14, 14, 28, 0.65)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.16) !important;
+      box-shadow: none !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand::before {
+      content: "忍";
+      position: absolute;
+      top: -6px;
+      right: -2px;
+      font-family: 'Zen Tokyo Zoo', sans-serif;
+      font-size: 46px;
+      color: rgba(200, 247, 255, 0.10);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .brand strong {
+      font-family: 'Russo One', 'Bebas Neue', sans-serif !important;
+      letter-spacing: 0.10em !important;
+      color: #efe9ee !important;
+      background: none !important;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: initial !important;
+      filter: none !important;
+      text-shadow: none !important;
+    }
+    .brand span {
+      color: var(--anime-paper-soft) !important;
+      letter-spacing: 0.18em !important;
+    }
+
+    /* === HUD PANELS === */
+    .topbar {
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.78), rgba(12, 12, 26, 0.78)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.14) !important;
+      box-shadow: none !important;
+    }
+    .stat strong {
+      font-family: 'Russo One', 'Bebas Neue', sans-serif !important;
+      color: #efe9ee !important;
+      text-shadow: none !important;
+    }
+    .stat small { color: var(--anime-paper-soft) !important; opacity: 0.85; }
+
+    .topbar.combo-hot {
+      border-color: rgba(142, 197, 212, 0.40) !important;
+      box-shadow: 0 0 10px rgba(142, 197, 212, 0.15) !important;
+    }
+    .topbar.combo-fire {
+      border-color: rgba(245, 196, 81, 0.48) !important;
+      box-shadow: 0 0 14px rgba(245, 196, 81, 0.18) !important;
+    }
+
+    .tip {
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.82), rgba(12, 12, 26, 0.78)) !important;
+      border: 1px solid rgba(142, 197, 212, 0.16) !important;
+      color: var(--anime-paper-soft) !important;
+      box-shadow: none !important;
+    }
+
+    .combo-popup {
+      background:
+        linear-gradient(180deg, rgba(30, 28, 50, 0.92), rgba(14, 14, 30, 0.92)) !important;
+      border: 1px solid rgba(83, 231, 255, 0.30) !important;
+      box-shadow: 0 0 12px rgba(83, 231, 255, 0.15) !important;
+    }
+    .combo-popup strong {
+      font-family: 'Russo One', sans-serif !important;
+      color: #f4e4ec !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+    }
+
+    .install,
+    .update-banner,
+    .orientation-note {
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.86), rgba(12, 12, 26, 0.86)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.16) !important;
+      box-shadow: none !important;
+    }
+
+    /* === GAME OVER (subdued ink stylization) === */
+    .game-over {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245, 196, 81, 0.10), transparent 60%),
+        linear-gradient(180deg, rgba(28, 24, 44, 0.95), rgba(12, 12, 26, 0.95)) !important;
+      border: 1px solid rgba(245, 196, 81, 0.30) !important;
+      box-shadow: none !important;
+    }
+    .game-over h1 {
+      font-family: 'Zen Tokyo Zoo', 'Russo One', sans-serif !important;
+      letter-spacing: 0.18em !important;
+      color: #f4e4ec !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+      filter: none !important;
+      text-shadow: none !important;
+    }
+    .game-over h1::after {
+      content: "敗北";
+      display: block;
+      margin-top: 4px;
+      font-family: 'Zen Tokyo Zoo', sans-serif;
+      font-size: 0.42em;
+      letter-spacing: 0.4em;
+      -webkit-text-fill-color: var(--anime-paper-soft);
+      color: var(--anime-paper-soft);
+      filter: none;
+      text-shadow: none;
+      opacity: 0.7;
+    }
+    .go-stat strong { font-family: 'Russo One', sans-serif !important; }
+    .go-primary, .go-secondary {
+      font-family: 'Russo One', 'Bebas Neue', sans-serif !important;
+      letter-spacing: 0.12em !important;
+    }
+    .go-primary {
+      background: linear-gradient(135deg, #1f6fff 0%, #2dd4bf 100%) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10) !important;
+    }
+    .go-secondary {
+      background: linear-gradient(135deg, rgba(83, 231, 255, 0.10), rgba(94, 124, 255, 0.10)) !important;
+      border: 1px solid rgba(83, 231, 255, 0.25) !important;
+    }
+
+    /* === DIFFICULTY STRIP === */
+    .diff-strip-btn {
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.10em !important;
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.85), rgba(12, 12, 26, 0.85)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.16) !important;
+    }
+    .diff-strip-btn.active-normal {
+      border-color: rgba(142, 197, 212, 0.40) !important;
+      box-shadow: none !important;
+      color: #efe9ee !important;
+    }
+    .diff-strip-btn.active-hard {
+      border-color: rgba(245, 196, 81, 0.48) !important;
+      box-shadow: none !important;
+      color: #efe9ee !important;
+    }
+
+    /* === MISSION FAB / PANEL / TOAST === */
+    .mission-fab {
+      background: linear-gradient(135deg, rgba(31, 111, 255, 0.88), rgba(45, 212, 191, 0.82)) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10) !important;
+    }
+    .mission-panel {
+      background:
+        linear-gradient(180deg, rgba(24, 22, 42, 0.95), rgba(12, 12, 26, 0.95)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.18) !important;
+      box-shadow: none !important;
+    }
+    .mission-panel h3 {
+      font-family: 'Russo One', sans-serif !important;
+      color: var(--anime-paper-soft) !important;
+      letter-spacing: 0.12em !important;
+    }
+    .mission-bar { background: rgba(200, 247, 255, 0.10) !important; }
+    .mission-fill {
+      background: linear-gradient(90deg, #53e7ff, #f5c451) !important;
+      box-shadow: none !important;
+    }
+    .toast {
+      background: linear-gradient(135deg, rgba(28, 26, 48, 0.95), rgba(14, 14, 30, 0.95)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.20) !important;
+      box-shadow: none !important;
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.08em !important;
+    }
+
+    /* === CONTROLS — calm anime buttons === */
+    .joystick-shell {
+      background:
+        radial-gradient(circle at 50% 50%, rgba(200, 247, 255, 0.10), transparent 70%),
+        linear-gradient(180deg, rgba(24, 22, 42, 0.82), rgba(12, 12, 26, 0.82)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.22) !important;
+      box-shadow: none !important;
+    }
+    .joystick-knob {
+      background:
+        radial-gradient(circle at 35% 30%, #e7fbff 0%, #53e7ff 48%, #1f6fff 100%) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
+    }
+    .joystick-label,
+    .powerup-label,
+    .dash-label,
+    .attack-label {
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.18em !important;
+      color: var(--anime-paper-soft) !important;
+      text-shadow: none !important;
+      opacity: 0.85;
+    }
+    .dash-button {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(142, 197, 212, 0.18), rgba(24, 22, 42, 0.88) 70%) !important;
+      border: 1px solid rgba(142, 197, 212, 0.35) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+    }
+    .dash-button svg path {
+      stroke: #efe9ee !important;
+      filter: none;
+    }
+    .attack-button {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(245, 196, 81, 0.18), rgba(24, 22, 42, 0.88) 70%) !important;
+      border: 1px solid rgba(245, 196, 81, 0.40) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+    }
+    .attack-button svg path {
+      stroke: #efe9ee !important;
+      filter: none;
+    }
+    .powerup-button {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(232, 201, 138, 0.20), rgba(28, 24, 44, 0.92) 70%) !important;
+      border: 1px solid rgba(232, 201, 138, 0.38) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+    }
+    .powerup-button strong {
+      font-family: 'Russo One', sans-serif !important;
+      color: #f4ecd6 !important;
+      text-shadow: none !important;
+    }
+
+    /* === START SCREEN MENU CARD === */
+    .start-screen {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(83, 231, 255, 0.10), transparent 40%),
+        linear-gradient(180deg, rgba(18, 16, 32, 0.88), rgba(10, 10, 22, 0.94)) !important;
+      backdrop-filter: blur(14px);
+    }
+    .menu-card {
+      background:
+        linear-gradient(180deg, rgba(28, 26, 50, 0.92), rgba(14, 14, 30, 0.94)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.22) !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(200, 247, 255, 0.06),
+        0 18px 48px rgba(0, 0, 0, 0.5) !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(83, 231, 255, 0.05), transparent 30%, transparent 70%, rgba(94, 124, 255, 0.05)) !important;
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      animation: none !important;
+    }
+    .menu-card::after {
+      content: "桜";
+      position: absolute;
+      bottom: -22px;
+      right: -12px;
+      font-family: 'Zen Tokyo Zoo', sans-serif;
+      font-size: 150px;
+      color: rgba(200, 247, 255, 0.05);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .menu-badge {
+      background: linear-gradient(135deg, rgba(200, 247, 255, 0.10), rgba(83, 231, 255, 0.08)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.22) !important;
+      color: #c8f7ff !important;
+      letter-spacing: 0.22em !important;
+      font-family: 'Russo One', sans-serif !important;
+      box-shadow: none !important;
+    }
+    .menu-title {
+      font-family: 'Zen Tokyo Zoo', 'Russo One', sans-serif !important;
+      letter-spacing: 0.05em !important;
+      color: #f4ecec !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+      filter: none !important;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) !important;
+      position: relative;
+    }
+    .menu-title span {
+      color: var(--anime-paper) !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+    }
+    .menu-title::after {
+      content: "忍者レーサー";
+      display: block;
+      margin-top: 6px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      font-size: 0.30em;
+      letter-spacing: 0.5em;
+      -webkit-text-fill-color: var(--anime-paper-soft);
+      color: var(--anime-paper-soft);
+      filter: none;
+      text-shadow: none;
+      opacity: 0.6;
+    }
+    .menu-subtitle { color: var(--anime-paper-soft) !important; opacity: 0.85; }
+
+    .menu-btn {
+      font-family: 'Russo One', 'Bebas Neue', sans-serif !important;
+      letter-spacing: 0.14em !important;
+      background:
+        linear-gradient(180deg, rgba(32, 30, 54, 0.88), rgba(16, 16, 32, 0.88)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.18) !important;
+      color: #efe9ee !important;
+      position: relative;
+      overflow: hidden;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease !important;
+    }
+    .menu-btn::after { content: none !important; }
+    .menu-btn:hover,
+    .menu-btn:active {
+      border-color: rgba(83, 231, 255, 0.45) !important;
+      box-shadow: none !important;
+      background:
+        linear-gradient(180deg, rgba(38, 34, 60, 0.92), rgba(20, 18, 36, 0.92)) !important;
+    }
+    .menu-btn.primary {
+      background: linear-gradient(135deg, #1f6fff 0%, #2dd4bf 100%) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10) !important;
+      color: #fff !important;
+    }
+    .diff-btn {
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.10em !important;
+      background:
+        linear-gradient(180deg, rgba(28, 26, 50, 0.88), rgba(14, 14, 30, 0.88)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.16) !important;
+      color: #efe9ee !important;
+    }
+    .diff-btn.active-normal {
+      border-color: rgba(142, 197, 212, 0.45) !important;
+      box-shadow: none !important;
+    }
+    .diff-btn.active-hard {
+      border-color: rgba(245, 196, 81, 0.50) !important;
+      box-shadow: none !important;
+    }
+
+    .best-score, .menu-version { color: var(--anime-paper-soft) !important; opacity: 0.9; }
+    .best-score strong, .menu-version strong {
+      font-family: 'Russo One', sans-serif !important;
+      color: #efe9ee !important;
+      text-shadow: none !important;
+    }
+
+    /* === SECONDARY MENU PANELS === */
+    .menu-panel {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(83, 231, 255, 0.10), transparent 40%),
+        linear-gradient(180deg, rgba(18, 16, 32, 0.94), rgba(10, 10, 22, 0.97)) !important;
+      backdrop-filter: blur(14px);
+    }
+    .panel-card {
+      background:
+        linear-gradient(180deg, rgba(28, 26, 50, 0.94), rgba(14, 14, 30, 0.96)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.22) !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(200, 247, 255, 0.06),
+        0 18px 40px rgba(0, 0, 0, 0.5) !important;
+    }
+    .panel-title {
+      font-family: 'Russo One', 'Bebas Neue', sans-serif !important;
+      letter-spacing: 0.14em !important;
+      color: #efe9ee !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+      filter: none !important;
+    }
+    .panel-list li strong {
+      color: var(--anime-paper) !important;
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.10em !important;
+    }
+    .panel-btn {
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.12em !important;
+      background: linear-gradient(135deg, rgba(83, 231, 255, 0.18), rgba(94, 124, 255, 0.14)) !important;
+      border: 1px solid rgba(200, 247, 255, 0.25) !important;
+      color: #efe9ee !important;
+      box-shadow: none !important;
+    }
+    .panel-row label {
+      color: var(--anime-paper-soft) !important;
+      font-family: 'Russo One', sans-serif !important;
+      letter-spacing: 0.10em !important;
+    }
+
+    /* Crystal icon — soft cream glow */
+    .crystal-icon { filter: drop-shadow(0 0 4px rgba(232, 201, 138, 0.40)); }
+
+    /* Reduce-motion respect */
+    @media (prefers-reduced-motion: reduce) {
+      .anime-fx .petal,
+      .anime-fx .speed-lines,
+      .anime-fx .kana,
+      .anime-fx .spark,
+      .menu-card::before,
+      .menu-btn::after { animation: none !important; }
+      #app::before { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -729,6 +1813,31 @@
     <canvas id="game"></canvas>
 
     <section class="hud">
+      <!-- Anime decorative layer (visual only, pointer-events:none) -->
+      <div class="anime-fx" aria-hidden="true">
+        <div class="ring"></div>
+        <div class="speed-lines"></div>
+        <div class="kana k1">疾</div>
+        <div class="kana k2">忍</div>
+        <div class="kana k3">桜</div>
+        <span class="petal p1"></span>
+        <span class="petal p2"></span>
+        <span class="petal p3"></span>
+        <span class="petal p4"></span>
+        <span class="petal p5"></span>
+        <span class="petal p6"></span>
+        <span class="petal p7"></span>
+        <span class="petal p8"></span>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+        <span class="spark s4"></span>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+      </div>
+
       <div class="brand">
         <strong>NinjaCycle</strong>
         <span>Neon highway duel</span>
@@ -743,13 +1852,24 @@
           <small>Life</small>
           <strong id="lifeLabel">3</strong>
         </div>
-        <div class="stat combo">
+        <div class="stat combo grow">
           <small>Combo</small>
           <strong id="comboLabel">0x</strong>
         </div>
+        <div class="stat crystal-pill">
+          <div class="crystal-icon"></div>
+          <div>
+            <small>Crystals</small>
+            <strong id="crystalLabel">0</strong>
+          </div>
+        </div>
       </div>
 
-      <div class="tip" id="tipBox">Swipe or use arrows to dodge traffic. Tap ATTACK three times in rhythm for the finisher.</div>
+      <div class="tip" id="tipBox">Swipe the road, use arrows, or steer with the joystick to dodge traffic. Tap SLASH three times in rhythm for the finisher.</div>
+      <div class="combo-popup hidden" id="comboPopup">
+        <small>Combo</small>
+        <strong id="comboPopupLabel">0x</strong>
+      </div>
 
       <div class="install hidden" id="installBox">
         <p>Install NinjaCycle on your phone for a full-screen app experience.</p>
@@ -769,45 +1889,108 @@
       <div class="game-over hidden" id="gameOver">
         <h1>Slain</h1>
         <p id="gameOverText">Score: 0</p>
-        <button id="restartBtn" type="button">Ride Again</button>
+        <div class="go-stats">
+          <div class="go-stat"><small>Best</small><strong id="goBestScore">0</strong></div>
+          <div class="go-stat"><small>Earned</small><strong id="goEarnedCrystals" class="crystal">+0</strong></div>
+          <div class="go-stat"><small>Total</small><strong id="goTotalCrystals" class="crystal">0</strong></div>
+          <div class="go-stat"><small>Difficulty</small><strong id="goDifficulty">Normal</strong></div>
+        </div>
+        <div class="go-message" id="goMessage"></div>
+        <button id="restartBtn" type="button" class="go-primary">Ride Again</button>
+        <button id="menuBtn" type="button" class="go-secondary">Menu</button>
       </div>
 
+      <div class="hud-strip">
+        <button class="diff-strip-btn active-normal" id="normalBtn" type="button">Normal</button>
+        <button class="diff-strip-btn" id="hardBtn" type="button">Hardcore<small id="hardLockLabel">Unlock: Best 500</small></button>
+      </div>
+
+      <button class="mission-fab" id="missionFab" type="button">📋</button>
+      <div class="mission-panel hidden" id="missionPanel">
+        <h3>Daily Missions</h3>
+        <div id="missionList"></div>
+        <div class="mission-bonus" id="missionBonus"></div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+
       <div class="controls">
-        <div class="joystick-shell" id="joystickBase" aria-label="Movement joystick">
-          <div class="joystick-knob" id="joystickKnob"></div>
-          <span class="joystick-label">Move</span>
+        <div class="action-stack">
+          <div class="powerup-cluster hidden" id="powerupCluster">
+            <button type="button" class="powerup-button" id="powerupBtn" aria-label="Activate stored power-up">
+              <div>
+                <strong id="powerupIcon">✦</strong>
+                <span id="powerupText">Power</span>
+              </div>
+            </button>
+            <span class="powerup-label">Power</span>
+          </div>
+          <div class="joystick-shell" id="joystickBase" aria-label="Movement joystick">
+            <div class="joystick-knob" id="joystickKnob"></div>
+            <span class="joystick-label">Move</span>
+          </div>
         </div>
-        <div class="attack-cluster">
-          <button type="button" class="attack-button" id="attackBtn" aria-label="Attack">
-            <svg viewBox="0 0 100 100" aria-hidden="true">
-              <path d="M58 18 L74 34"></path>
-              <path d="M70 22 L78 30"></path>
-              <path d="M40 56 L70 26"></path>
-              <path d="M34 62 L46 50"></path>
-              <path d="M28 68 L34 74"></path>
-              <path d="M22 74 L30 82"></path>
-            </svg>
-          </button>
-          <span class="attack-label">Slash</span>
+        <div class="action-stack">
+          <div class="dash-cluster">
+            <button type="button" class="dash-button" id="dashBtn" aria-label="Dash">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M18 52 L46 30"></path>
+                <path d="M18 52 L46 74"></path>
+                <path d="M42 52 L84 52"></path>
+              </svg>
+            </button>
+            <span class="dash-label">Dash</span>
+          </div>
+          <div class="attack-cluster">
+            <button type="button" class="attack-button" id="attackBtn" aria-label="Attack">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M58 18 L74 34"></path>
+                <path d="M70 22 L78 30"></path>
+                <path d="M40 56 L70 26"></path>
+                <path d="M34 62 L46 50"></path>
+                <path d="M28 68 L34 74"></path>
+                <path d="M22 74 L30 82"></path>
+              </svg>
+            </button>
+            <span class="attack-label">Slash</span>
+          </div>
         </div>
       </div>
 
       <div class="start-screen" id="startScreen">
         <div class="menu-card">
           <div class="menu-badge">Neon Highway Beta</div>
-          <h1 class="menu-title">Ninja <span>Racer</span></h1>
+          <h1 class="menu-title">Ninja<span>Cycle</span></h1>
           <p class="menu-subtitle">Slash through highway chaos, dodge traffic, and chain stylish kills before the road takes you down.</p>
 
           <div class="menu-actions">
             <button class="menu-btn primary" id="startBtn" type="button">Start</button>
+            <button class="menu-btn" id="missionsBtn" type="button">Daily Missions</button>
             <button class="menu-btn" id="howToBtn" type="button">How To Play</button>
             <button class="menu-btn" id="optionsBtn" type="button">Options</button>
             <button class="menu-btn" id="creditsBtn" type="button">Credits</button>
           </div>
 
+          <div class="diff-row">
+            <button class="diff-btn active-normal" id="menuNormalBtn" type="button"><strong>Normal</strong><span>Default run</span></button>
+            <button class="diff-btn locked" id="menuHardBtn" type="button"><strong>Hardcore</strong><span id="menuHardText">Unlock with Best 500</span></button>
+          </div>
+
           <div class="menu-meta">
             <div class="best-score">Best Score<strong id="bestScoreLabel">0</strong></div>
-            <div class="menu-version">Beta<br><strong id="versionLabel">v0.3</strong></div>
+            <div class="best-score">Crystals<strong id="menuCrystalLabel">0</strong></div>
+            <div class="menu-version">Beta<br><strong id="versionLabel">v0.5</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-panel hidden" id="missionsPanel">
+        <div class="panel-card">
+          <h2 class="panel-title">Daily Missions</h2>
+          <div id="missionsMenuList"></div>
+          <div class="mission-bonus" id="missionsMenuBonus"></div>
+          <div class="panel-actions">
+            <button class="panel-btn" data-close-panel="missionsPanel" type="button">Back</button>
           </div>
         </div>
       </div>
@@ -816,10 +1999,11 @@
         <div class="panel-card">
           <h2 class="panel-title">How To Play</h2>
           <ul class="panel-list">
-            <li><strong>Move</strong>Usa el joystick izquierdo para cambiar de lane y ajustar tu posicion vertical.</li>
-            <li><strong>Attack</strong>Pulsa la espada derecha para lanzar cortes. Si fallas, oiras solo el aire.</li>
-            <li><strong>Combo</strong>Encadena tres ataques para cargar el finisher. El ultimo golpe es corto y preciso.</li>
-            <li><strong>Survive</strong>Evita trafico, espadazos enemigos y choques directos para mantener la racha.</li>
+            <li><strong>Move</strong>Use the left joystick to change lanes and move freely up and down the road.</li>
+            <li><strong>Attack</strong>Tap the right sword button to slash. If you miss, you will only hear the blade cut through the air.</li>
+            <li><strong>Dash</strong>Use the dash button above attack to evade danger quickly. Dash gives you a very short escape window.</li>
+            <li><strong>Combo</strong>Chain three hits to trigger a finisher. The last strike is stronger and can reward power-ups.</li>
+            <li><strong>Survive</strong>Dodge traffic, read enemy attack warnings, and use your stored power-up at the right moment.</li>
           </ul>
           <div class="panel-actions">
             <button class="panel-btn" data-close-panel="howToPanel" type="button">Back</button>
@@ -853,7 +2037,7 @@
       <div class="menu-panel hidden" id="creditsPanel">
         <div class="panel-card">
           <h2 class="panel-title">Credits</h2>
-          <p class="panel-copy">Created by Real Aether Productions. Ninja Racer is being shaped as a phone-first action game for fast beta testing, streaming, and feel-driven iteration.</p>
+          <p class="panel-copy">Created by Real Aether Productions. NinjaCycle is being shaped as a phone-first action game for fast beta testing, streaming, and feel-driven iteration.</p>
           <div class="panel-actions">
             <button class="panel-btn" data-close-panel="creditsPanel" type="button">Back</button>
           </div>
@@ -869,28 +2053,57 @@
     const scoreLabel = document.getElementById("scoreLabel");
     const lifeLabel = document.getElementById("lifeLabel");
     const comboLabel = document.getElementById("comboLabel");
+    const comboPopup = document.getElementById("comboPopup");
+    const comboPopupLabel = document.getElementById("comboPopupLabel");
     const tipBox = document.getElementById("tipBox");
     const gameOverBox = document.getElementById("gameOver");
     const gameOverText = document.getElementById("gameOverText");
     const restartBtn = document.getElementById("restartBtn");
+    const menuBtn = document.getElementById("menuBtn");
     const installBox = document.getElementById("installBox");
     const installBtn = document.getElementById("installBtn");
     const updateBox = document.getElementById("updateBox");
     const updateBtn = document.getElementById("updateBtn");
     const topbar = document.getElementById("topbar");
     const attackBtn = document.getElementById("attackBtn");
+    const dashBtn = document.getElementById("dashBtn");
+    const powerupCluster = document.getElementById("powerupCluster");
+    const powerupBtn = document.getElementById("powerupBtn");
+    const powerupIcon = document.getElementById("powerupIcon");
+    const powerupText = document.getElementById("powerupText");
     const orientationNote = document.getElementById("orientationNote");
     const joystickBase = document.getElementById("joystickBase");
     const joystickKnob = document.getElementById("joystickKnob");
     const startScreen = document.getElementById("startScreen");
     const startBtn = document.getElementById("startBtn");
+    const missionsBtn = document.getElementById("missionsBtn");
     const howToBtn = document.getElementById("howToBtn");
     const optionsBtn = document.getElementById("optionsBtn");
     const creditsBtn = document.getElementById("creditsBtn");
+    const missionsPanel = document.getElementById("missionsPanel");
     const howToPanel = document.getElementById("howToPanel");
     const optionsPanel = document.getElementById("optionsPanel");
     const creditsPanel = document.getElementById("creditsPanel");
     const bestScoreLabel = document.getElementById("bestScoreLabel");
+    const menuCrystalLabel = document.getElementById("menuCrystalLabel");
+    const crystalLabel = document.getElementById("crystalLabel");
+    const normalBtn = document.getElementById("normalBtn");
+    const hardBtn = document.getElementById("hardBtn");
+    const hardLockLabel = document.getElementById("hardLockLabel");
+    const menuNormalBtn = document.getElementById("menuNormalBtn");
+    const menuHardBtn = document.getElementById("menuHardBtn");
+    const menuHardText = document.getElementById("menuHardText");
+    const missionFab = document.getElementById("missionFab");
+    const missionPanel = document.getElementById("missionPanel");
+    const missionList = document.getElementById("missionList");
+    const missionBonus = document.getElementById("missionBonus");
+    const missionsMenuList = document.getElementById("missionsMenuList");
+    const missionsMenuBonus = document.getElementById("missionsMenuBonus");
+    const goBestScore = document.getElementById("goBestScore");
+    const goEarnedCrystals = document.getElementById("goEarnedCrystals");
+    const goTotalCrystals = document.getElementById("goTotalCrystals");
+    const goDifficulty = document.getElementById("goDifficulty");
+    const goMessage = document.getElementById("goMessage");
     const masterVolume = document.getElementById("masterVolume");
     const sfxVolume = document.getElementById("sfxVolume");
     const ambienceVolume = document.getElementById("ambienceVolume");
@@ -905,17 +2118,173 @@
     let lastTime = performance.now();
     let joystickState = { active: false, pointerId: null, x: 0, y: 0 };
     let attackPointerId = null;
+    let dashPointerId = null;
     let refreshingForUpdate = false;
     let updatePromptShown = false;
-    const menuPanels = [howToPanel, optionsPanel, creditsPanel];
+    const menuPanels = [missionsPanel, howToPanel, optionsPanel, creditsPanel];
+    const STORAGE_PREFIX = "ninjacycle";
+    const LEGACY_STORAGE_PREFIX = "ninja-racer";
     const settings = loadSettings();
+    // Beta-only persistence: this is local browser progress, not a paid-currency store.
+    const storage = {
+      get(key, fallback) {
+        return readLocalJson(key, fallback);
+      },
+      set(key, value) {
+        writeLocalJson(key, value);
+      }
+    };
+    const missionPool = [
+      { id: "combo10", text: "Reach combo x10", target: 10, stat: "maxCombo", reward: 50 },
+      { id: "kills5", text: "Eliminate 5 enemies", target: 5, stat: "kills", reward: 40 },
+      { id: "survive90", text: "Survive 90 seconds", target: 90, stat: "time", reward: 60 },
+      { id: "perf2", text: "Land 2 perfect finishers", target: 2, stat: "perfectFinishers", reward: 70 },
+      { id: "score500", text: "Score above 500", target: 500, stat: "score", reward: 50 },
+      { id: "dodge10", text: "Dodge 10 traffic cars", target: 10, stat: "dodges", reward: 45 }
+    ];
+    const difficultyConfig = {
+      normal: { baseSpeed: 4.2, maxSpeed: 10.6, enemyRate: 1, trafficRate: 1, enemyHpBonus: 0, aggression: 1, scoreMult: 1 },
+      hard: { baseSpeed: 5, maxSpeed: 12.2, enemyRate: 0.78, trafficRate: 0.84, enemyHpBonus: 1, aggression: 1.18, scoreMult: 1.35 }
+    };
+    const POWER_UP_TYPES = {
+      SHIELD: "shield",
+      SLOWMO: "slowmo",
+      HEAL: "heal",
+      GHOST: "ghost",
+      IMMUNITY: "immunity",
+      BLADE_EXTEND: "blade_extend",
+      CHAIN_LIGHTNING: "chain_lightning",
+      DOUBLE_SCORE: "double_score"
+    };
+    const POWER_UP_SPECS = {
+      [POWER_UP_TYPES.SHIELD]: { label: "Shield", short: "Shield", icon: "◌", tier: 1, color: "#6df7ff", ring: "rgba(109,247,255,0.3)" },
+      [POWER_UP_TYPES.HEAL]: { label: "Life +1", short: "Life", icon: "+", tier: 1, color: "#7dff88", ring: "rgba(125,255,136,0.28)" },
+      [POWER_UP_TYPES.IMMUNITY]: { label: "Hit Immunity", short: "Immune", icon: "✹", tier: 1, color: "#ffe45c", ring: "rgba(255,228,92,0.28)" },
+      [POWER_UP_TYPES.SLOWMO]: { label: "Slow Motion", short: "Slow", icon: "◔", tier: 2, color: "#9b7dff", ring: "rgba(155,125,255,0.3)" },
+      [POWER_UP_TYPES.BLADE_EXTEND]: { label: "Blade Extension", short: "Blade", icon: "✦", tier: 2, color: "#ff9a5c", ring: "rgba(255,154,92,0.28)" },
+      [POWER_UP_TYPES.GHOST]: { label: "Ghost Mode", short: "Ghost", icon: "◈", tier: 2, color: "#9cf6ff", ring: "rgba(156,246,255,0.28)" },
+      [POWER_UP_TYPES.CHAIN_LIGHTNING]: { label: "Chain Lightning", short: "Chain", icon: "ϟ", tier: 3, color: "#c28cff", ring: "rgba(194,140,255,0.3)" },
+      [POWER_UP_TYPES.DOUBLE_SCORE]: { label: "Double Score", short: "2x", icon: "2×", tier: 3, color: "#f5c451", ring: "rgba(245,196,81,0.28)" }
+    };
+    // Zone library keeps endless runs visually fresh without changing the core lane logic.
+    const ZONE_LIBRARY = [
+      {
+        key: "neon_highway",
+        name: "Neon Highway",
+        skyTop: "#090b18",
+        skyBottom: "#25104f",
+        horizonGlow: "rgba(255, 133, 72, 0.28)",
+        cityGlow: "rgba(255, 133, 72, 0.12)",
+        skylineA: "rgba(87, 99, 164, 0.28)",
+        skylineB: "rgba(60, 68, 110, 0.22)",
+        roadTop: "#171a33",
+        roadBottom: "#090d1f",
+        lane: "rgba(255, 163, 102, 0.24)",
+        shoulder: "#111",
+        edge: "#ffad58",
+        streak: "#ff8f58",
+        dust: "rgba(255, 132, 76, 0.04)"
+      },
+      {
+        key: "twin_suns_desert",
+        name: "Twin Suns Desert",
+        skyTop: "#311812",
+        skyBottom: "#8f4728",
+        horizonGlow: "rgba(255, 185, 94, 0.4)",
+        cityGlow: "rgba(255, 224, 170, 0.1)",
+        skylineA: "rgba(140, 92, 48, 0.26)",
+        skylineB: "rgba(104, 67, 34, 0.2)",
+        roadTop: "#372317",
+        roadBottom: "#1b120d",
+        lane: "rgba(255, 202, 120, 0.28)",
+        shoulder: "#170f0a",
+        edge: "#ffc56a",
+        streak: "#ffb15a",
+        dust: "rgba(255, 210, 145, 0.06)"
+      },
+      {
+        key: "emerald_ruins",
+        name: "Emerald Ruins",
+        skyTop: "#071913",
+        skyBottom: "#11493d",
+        horizonGlow: "rgba(87, 255, 193, 0.28)",
+        cityGlow: "rgba(111, 255, 164, 0.1)",
+        skylineA: "rgba(60, 121, 98, 0.26)",
+        skylineB: "rgba(32, 86, 67, 0.2)",
+        roadTop: "#142822",
+        roadBottom: "#081412",
+        lane: "rgba(109, 255, 190, 0.24)",
+        shoulder: "#0a100f",
+        edge: "#63f4c4",
+        streak: "#66f6a8",
+        dust: "rgba(109, 255, 190, 0.05)"
+      },
+      {
+        key: "signal_arcade",
+        name: "Signal Arcade",
+        skyTop: "#1a0a22",
+        skyBottom: "#183d67",
+        horizonGlow: "rgba(83, 231, 255, 0.34)",
+        cityGlow: "rgba(255, 214, 102, 0.12)",
+        skylineA: "rgba(56, 105, 168, 0.28)",
+        skylineB: "rgba(32, 68, 118, 0.22)",
+        roadTop: "#14243c",
+        roadBottom: "#07131f",
+        lane: "rgba(83, 231, 255, 0.26)",
+        shoulder: "#071018",
+        edge: "#ffd15c",
+        streak: "#53e7ff",
+        dust: "rgba(255, 209, 92, 0.05)"
+      },
+      {
+        key: "frozen_overpass",
+        name: "Frozen Overpass",
+        skyTop: "#091326",
+        skyBottom: "#2d4d73",
+        horizonGlow: "rgba(152, 219, 255, 0.34)",
+        cityGlow: "rgba(212, 245, 255, 0.1)",
+        skylineA: "rgba(102, 138, 177, 0.26)",
+        skylineB: "rgba(65, 94, 126, 0.2)",
+        roadTop: "#172535",
+        roadBottom: "#0b1119",
+        lane: "rgba(163, 226, 255, 0.28)",
+        shoulder: "#0b1016",
+        edge: "#9ae6ff",
+        streak: "#7dc4ff",
+        dust: "rgba(220, 245, 255, 0.06)"
+      },
+      {
+        key: "sunset_circuit",
+        name: "Sunset Circuit",
+        skyTop: "#26112c",
+        skyBottom: "#d65c3a",
+        horizonGlow: "rgba(255, 156, 90, 0.4)",
+        cityGlow: "rgba(255, 245, 182, 0.1)",
+        skylineA: "rgba(173, 88, 63, 0.28)",
+        skylineB: "rgba(117, 54, 45, 0.22)",
+        roadTop: "#2b1822",
+        roadBottom: "#120b11",
+        lane: "rgba(255, 194, 143, 0.26)",
+        shoulder: "#140d0f",
+        edge: "#ffbf7d",
+        streak: "#ff8f6a",
+        dust: "rgba(255, 184, 122, 0.06)"
+      }
+    ];
+    let crystals = storage.get("crystals", 0);
+    let hardUnlocked = storage.get("hard-unlocked", false);
+    let selectedDifficulty = "normal";
+    let runCrystalsEarned = 0;
+    let missionPanelOpen = false;
+    let runStats = {};
+    let dailyMissions = getDailyMissions();
 
     const NUM_LANES = 4;
     const VEHICLES = [
       { body: "#29407a", roof: "#3c5dac", w: 40, h: 74, glow: "#8ac5ff" },
       { body: "#4d3a1f", roof: "#7d5c2f", w: 48, h: 98, glow: "#ffbc73" },
       { body: "#244932", roof: "#3c7653", w: 46, h: 84, glow: "#9af0ae" },
-      { body: "#52213d", roof: "#8c3569", w: 42, h: 78, glow: "#ff98db" },
+      { body: "#173f5f", roof: "#1f6fff", w: 42, h: 78, glow: "#53e7ff" },
       { body: "#4b4b55", roof: "#7c7d89", w: 52, h: 110, glow: "#fcf1b2" }
     ];
 
@@ -926,39 +2295,357 @@
       sfx: null,
       ambience: null,
       ready: false,
-      engineOsc: null,
-      engineGain: null,
-      engineLfo: null,
-      engineLfoGain: null,
       trafficNoise: null,
       trafficFilter: null,
       trafficGain: null,
       roadPulse: 0
     };
 
-    function loadSettings() {
+    function storageKey(key, prefix = STORAGE_PREFIX) {
+      return `${prefix}-${key}`;
+    }
+
+    function readLocalJson(key, fallback) {
       try {
-        const stored = JSON.parse(localStorage.getItem("ninja-racer-settings") || "{}");
-        return {
-          master: typeof stored.master === "number" ? stored.master : 0.8,
-          sfx: typeof stored.sfx === "number" ? stored.sfx : 0.9,
-          ambience: typeof stored.ambience === "number" ? stored.ambience : 0.7
-        };
+        const currentKey = storageKey(key);
+        const legacyKey = storageKey(key, LEGACY_STORAGE_PREFIX);
+        const current = localStorage.getItem(currentKey);
+        const legacy = localStorage.getItem(legacyKey);
+        const value = current === null ? legacy : current;
+        if (value === null) return fallback;
+        if (current === null && legacy !== null) {
+          localStorage.setItem(currentKey, legacy);
+        }
+        return JSON.parse(value);
       } catch {
-        return { master: 0.8, sfx: 0.9, ambience: 0.7 };
+        return fallback;
       }
     }
 
+    function writeLocalJson(key, value) {
+      try {
+        localStorage.setItem(storageKey(key), JSON.stringify(value));
+      } catch {}
+    }
+
+    function loadSettings() {
+      const stored = readLocalJson("settings", {});
+      return {
+        master: typeof stored.master === "number" ? stored.master : 0.8,
+        sfx: typeof stored.sfx === "number" ? stored.sfx : 0.9,
+        ambience: typeof stored.ambience === "number" ? stored.ambience : 0.7
+      };
+    }
+
     function saveSettings() {
-      localStorage.setItem("ninja-racer-settings", JSON.stringify(settings));
+      writeLocalJson("settings", settings);
     }
 
     function loadBestScore() {
-      return Number(localStorage.getItem("ninja-racer-best-score") || 0);
+      return Number(readLocalJson("best-score", 0) || 0);
     }
 
     function updateBestScoreLabel() {
       bestScoreLabel.textContent = Math.floor(loadBestScore());
+      menuCrystalLabel.textContent = crystals;
+      crystalLabel.textContent = crystals;
+    }
+
+    function todayKey() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function getDailyMissions() {
+      const saved = storage.get("missions", null);
+      if (saved && saved.date === todayKey()) return saved;
+      const pool = [...missionPool];
+      const picks = [];
+      for (let i = 0; i < 3; i += 1) {
+        const idx = Math.floor(Math.random() * pool.length);
+        picks.push({ ...pool[idx], progress: 0, done: false });
+        pool.splice(idx, 1);
+      }
+      const data = { date: todayKey(), missions: picks, bonusClaimed: false };
+      storage.set("missions", data);
+      return data;
+    }
+
+    function saveDailyMissions() {
+      storage.set("missions", dailyMissions);
+    }
+
+    function renderMissionRows(targetList, targetBonus) {
+      targetList.innerHTML = "";
+      dailyMissions.missions.forEach((mission) => {
+        const pct = Math.min(1, mission.progress / mission.target);
+        const row = document.createElement("div");
+        row.className = "mission-item";
+        row.innerHTML = `
+          <div class="mission-check${mission.done ? " done" : ""}">${mission.done ? "✓" : ""}</div>
+          <div class="mission-text">
+            ${mission.text}
+            <small>Reward: ✦${mission.reward}</small>
+            <div class="mission-bar"><div class="mission-fill" style="width:${pct * 100}%"></div></div>
+          </div>
+          <div class="mission-progress">${mission.done ? "✓" : `${mission.progress}/${mission.target}`}</div>
+        `;
+        targetList.appendChild(row);
+      });
+      const allDone = dailyMissions.missions.every((mission) => mission.done);
+      targetBonus.textContent = allDone
+        ? (dailyMissions.bonusClaimed ? "Daily bonus already claimed" : "All 3 complete: +150 crystals ready")
+        : "Complete all 3 for +150 crystals";
+      targetBonus.style.color = allDone && !dailyMissions.bonusClaimed ? "#a78bfa" : "";
+    }
+
+    function renderMissions() {
+      renderMissionRows(missionList, missionBonus);
+      renderMissionRows(missionsMenuList, missionsMenuBonus);
+    }
+
+    function earnCrystals(amount, reason = "") {
+      if (amount <= 0) return;
+      crystals += amount;
+      runCrystalsEarned += amount;
+      storage.set("crystals", crystals);
+      crystalLabel.textContent = crystals;
+      menuCrystalLabel.textContent = crystals;
+      if (reason) {
+        showToastMessage(`✦ +${amount} ${reason}`);
+      }
+    }
+
+    // Shared toast helper keeps reward and power-up messages consistent.
+    function showToastMessage(message, duration = 2200) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove("show"), duration);
+    }
+
+    function updateMissionProgress(stat, value) {
+      let changed = false;
+      dailyMissions.missions.forEach((mission) => {
+        if (mission.done || mission.stat !== stat) return;
+        const cumulative = ["kills", "dodges", "perfectFinishers"];
+        mission.progress = cumulative.includes(stat) ? value : Math.max(mission.progress, value);
+        if (mission.progress >= mission.target) {
+          mission.done = true;
+          changed = true;
+          earnCrystals(mission.reward, "mission");
+        }
+      });
+      if (changed) {
+        saveDailyMissions();
+        renderMissions();
+        if (dailyMissions.missions.every((mission) => mission.done) && !dailyMissions.bonusClaimed) {
+          dailyMissions.bonusClaimed = true;
+          saveDailyMissions();
+          earnCrystals(150, "daily bonus");
+        }
+      }
+    }
+
+    function refreshDifficultyUi() {
+      normalBtn.className = `diff-strip-btn${selectedDifficulty === "normal" ? " active-normal" : ""}`;
+      hardBtn.className = `diff-strip-btn${selectedDifficulty === "hard" ? " active-hard" : ""}`;
+      menuNormalBtn.className = `diff-btn${selectedDifficulty === "normal" ? " active-normal" : ""}`;
+      menuHardBtn.className = `diff-btn${selectedDifficulty === "hard" ? " active-hard" : ""}${hardUnlocked ? "" : " locked"}`;
+      hardBtn.disabled = !hardUnlocked;
+      menuHardBtn.disabled = !hardUnlocked;
+      hardLockLabel.textContent = hardUnlocked ? "Unlocked" : "Unlock: Best 500";
+      menuHardText.textContent = hardUnlocked ? "Unlocked" : "Unlock with Best 500";
+    }
+
+    function selectDifficulty(mode) {
+      if (mode === "hard" && !hardUnlocked) return;
+      selectedDifficulty = mode;
+      refreshDifficultyUi();
+    }
+
+    // Run difficulty ramps in stages so early seconds stay survivable on phone.
+    function getRunDifficultyScale() {
+      const runTime = state.time || 0;
+      let scale = 1;
+
+      if (runTime < 20) scale = 0.35;
+      else if (runTime < 45) scale = 0.55;
+      else if (runTime < 90) scale = 0.75;
+      else scale = 1 + Math.min(0.2, (runTime - 90) / 120 * 0.2);
+
+      if (selectedDifficulty === "hard") {
+        scale += runTime < 45 ? 0.12 : 0.15;
+      }
+
+      return Math.min(scale, 1.25);
+    }
+
+    function getPowerUpSpec(type) {
+      return POWER_UP_SPECS[type] || POWER_UP_SPECS[POWER_UP_TYPES.SHIELD];
+    }
+
+    function getZoneTheme(key = state.currentZoneKey) {
+      return ZONE_LIBRARY.find((zone) => zone.key === key) || ZONE_LIBRARY[0];
+    }
+
+    // Endless zones rotate on a timer so runs gain variety without changing the combat rules.
+    function pickNextZoneKey(currentKey) {
+      const options = ZONE_LIBRARY.filter((zone) => zone.key !== currentKey);
+      return options[Math.floor(Math.random() * options.length)].key;
+    }
+
+    function setZone(key, announce = false) {
+      state.currentZoneKey = key;
+      state.zoneShift = 1;
+      state.zoneTimer = 48 + Math.random() * 28;
+      if (announce) {
+        showToastMessage(getZoneTheme(key).name, 1800);
+      }
+    }
+
+    // One-slot inventory keeps the system readable on mobile; new pickups replace the previous stored item.
+    function updateStoredPowerUpUi() {
+      if (!state.storedPowerUp) {
+        powerupCluster.classList.add("hidden");
+        return;
+      }
+      const spec = getPowerUpSpec(state.storedPowerUp.type);
+      powerupCluster.classList.remove("hidden");
+      powerupIcon.textContent = spec.icon;
+      powerupText.textContent = spec.short;
+      powerupBtn.style.borderColor = spec.ring;
+      powerupBtn.style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 26px rgba(0,0,0,0.28), 0 0 18px ${spec.ring}`;
+      powerupIcon.style.color = spec.color;
+    }
+
+    function getScoreMultiplier() {
+      return state.doubleScoreTimer > 0 ? 2 : 1;
+    }
+
+    function addLightningArc(fromX, fromY, toX, toY, color = "#c28cff") {
+      state.lightningArcs.push({ fromX, fromY, toX, toY, color, life: 12, max: 12 });
+    }
+
+    // Centralized enemy defeat helper keeps combo kills, chain kills, and future effects consistent.
+    function defeatEnemy(enemy, options = {}) {
+      if (!enemy || enemy.dying) return false;
+      enemy.dying = options.dying ?? 32;
+      enemy.ddir = options.ddir ?? (Math.random() > 0.5 ? 1 : -1);
+      enemy.deathDelay = options.deathDelay ?? 0;
+      enemy.deathStyle = options.deathStyle || "normal";
+      enemy.knockback = options.knockback ?? 2;
+      runStats.kills += 1;
+      updateMissionProgress("kills", runStats.kills);
+      return true;
+    }
+
+    // Power-up rewards are gated by combo success and a cooldown so the road stays readable.
+    function trySpawnPowerUp(sourceEnemy, isPerfect) {
+      if (!sourceEnemy || state.powerUps.length >= 2 || state.powerUpCooldown > 0) return;
+      const chance = isPerfect ? 0.45 : 0.25;
+      if (Math.random() > chance) return;
+
+      const weightedTypes = [
+        POWER_UP_TYPES.SHIELD,
+        POWER_UP_TYPES.HEAL,
+        POWER_UP_TYPES.IMMUNITY,
+        POWER_UP_TYPES.SLOWMO,
+        POWER_UP_TYPES.BLADE_EXTEND,
+        POWER_UP_TYPES.GHOST,
+        POWER_UP_TYPES.CHAIN_LIGHTNING,
+        POWER_UP_TYPES.DOUBLE_SCORE
+      ];
+      const type = weightedTypes[Math.floor(Math.random() * weightedTypes.length)];
+      state.powerUps.push({
+        type,
+        x: Math.max(road().left + 24, Math.min(road().right - 24, sourceEnemy.x + (Math.random() - 0.5) * 26)),
+        y: sourceEnemy.y - 18,
+        driftX: (Math.random() - 0.5) * 0.75,
+        travelSpeed: 0.55 + Math.random() * 0.22,
+        life: 300,
+        bob: Math.random() * Math.PI * 2,
+        pulse: Math.random() * Math.PI * 2,
+        size: 18
+      });
+      // Spawn burst makes the reward readable the moment it appears.
+      const spawnColor = getPowerUpSpec(type).color;
+      addParticles(sourceEnemy.x, sourceEnemy.y - 12, spawnColor, 14, 4);
+      state.powerUpCooldown = 300;
+    }
+
+    // Pickups only store into a single slot now; nothing activates until the player presses the new button.
+    function collectPowerUp(powerUp) {
+      const spec = getPowerUpSpec(powerUp.type);
+      state.storedPowerUp = { type: powerUp.type };
+      addParticles(state.player.x, state.player.y, spec.color, 18, 4.5);
+      showToastMessage(`${spec.label} Stored`, 1700);
+      updateStoredPowerUpUi();
+      syncHud();
+    }
+
+    function triggerChainLightning(sourceEnemy) {
+      if (state.chainLightningCharges <= 0 || !sourceEnemy) return;
+      state.chainLightningCharges = 0;
+      const alive = state.enemies
+        .filter((enemy) => !enemy.dying && enemy !== sourceEnemy)
+        .map((enemy) => ({ enemy, dist: Math.hypot(enemy.x - sourceEnemy.x, enemy.y - sourceEnemy.y) }))
+        .filter((entry) => entry.dist < Math.max(road().laneWidth * 1.7, 110))
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 2);
+
+      let from = sourceEnemy;
+      alive.forEach((entry, index) => {
+        const target = entry.enemy;
+        addLightningArc(from.x, from.y, target.x, target.y);
+        target.hitFlash = 16;
+        target.hp -= 2;
+        addParticles(target.x, target.y, getPowerUpSpec(POWER_UP_TYPES.CHAIN_LIGHTNING).color, 12, 4.5);
+        if (target.hp <= 0) {
+          defeatEnemy(target, {
+            ddir: index % 2 === 0 ? 1 : -1,
+            deathStyle: "perfect",
+            knockback: 3.6
+          });
+        }
+        from = target;
+      });
+    }
+
+    // All power-up effects live here so pickup stays passive and restart cleanup stays simple.
+    function activateStoredPowerUp() {
+      if (!state.storedPowerUp) return;
+      const type = state.storedPowerUp.type;
+      const spec = getPowerUpSpec(type);
+
+      if (type === POWER_UP_TYPES.SHIELD) {
+        state.player.shield = 1;
+      } else if (type === POWER_UP_TYPES.HEAL) {
+        state.player.hp = Math.min(state.player.maxHp, state.player.hp + 1);
+      } else if (type === POWER_UP_TYPES.IMMUNITY) {
+        state.immunityTimer = 2.5;
+      } else if (type === POWER_UP_TYPES.SLOWMO) {
+        state.slowMoTimer = 3.8;
+      } else if (type === POWER_UP_TYPES.BLADE_EXTEND) {
+        state.bladeExtensionTimer = 5;
+      } else if (type === POWER_UP_TYPES.GHOST) {
+        state.ghostTimer = 4;
+      } else if (type === POWER_UP_TYPES.CHAIN_LIGHTNING) {
+        state.chainLightningCharges = 1;
+      } else if (type === POWER_UP_TYPES.DOUBLE_SCORE) {
+        state.doubleScoreTimer = 6;
+      }
+
+      state.storedPowerUp = null;
+      addParticles(state.player.x, state.player.y, spec.color, 24, 5.5);
+      showToastMessage(`${spec.label} Active`, 1900);
+      updateStoredPowerUpUi();
+      syncHud();
+    }
+
+    function toggleMissionPanel(force) {
+      missionPanelOpen = typeof force === "boolean" ? force : !missionPanelOpen;
+      missionPanel.classList.toggle("hidden", !missionPanelOpen);
     }
 
     function ensureAudio() {
@@ -988,23 +2675,6 @@
       sfx.connect(master);
       master.connect(ctx.destination);
 
-      const engineOsc = ctx.createOscillator();
-      const engineGain = ctx.createGain();
-      const engineLfo = ctx.createOscillator();
-      const engineLfoGain = ctx.createGain();
-      engineOsc.type = "sawtooth";
-      engineOsc.frequency.value = 74;
-      engineGain.gain.value = 0.0001;
-      engineLfo.type = "sine";
-      engineLfo.frequency.value = 3.1;
-      engineLfoGain.gain.value = 2.4;
-      engineLfo.connect(engineLfoGain);
-      engineLfoGain.connect(engineOsc.frequency);
-      engineOsc.connect(engineGain);
-      engineGain.connect(ambience);
-      engineOsc.start();
-      engineLfo.start();
-
       const trafficNoise = ctx.createBufferSource();
       trafficNoise.buffer = createNoiseBuffer(ctx, 2.2);
       trafficNoise.loop = true;
@@ -1024,10 +2694,6 @@
       audioState.music = music;
       audioState.sfx = sfx;
       audioState.ambience = ambience;
-      audioState.engineOsc = engineOsc;
-      audioState.engineGain = engineGain;
-      audioState.engineLfo = engineLfo;
-      audioState.engineLfoGain = engineLfoGain;
       audioState.trafficNoise = trafficNoise;
       audioState.trafficFilter = trafficFilter;
       audioState.trafficGain = trafficGain;
@@ -1063,12 +2729,6 @@
       const source = audioState.ctx.createBufferSource();
       source.buffer = createNoiseBuffer(audioState.ctx, duration);
       return source;
-    }
-
-    function scheduleGain(gainNode, value, time, ramp = 0.08) {
-      gainNode.gain.cancelScheduledValues(time);
-      gainNode.gain.setValueAtTime(Math.max(0.0001, gainNode.gain.value), time);
-      gainNode.gain.exponentialRampToValueAtTime(Math.max(0.0001, value), time + ramp);
     }
 
     function playSwordWhoosh() {
@@ -1170,6 +2830,44 @@
       osc.stop(now + 0.22);
     }
 
+    // Enemy attack cues piggyback on the current audio system so we improve readability without a full redesign.
+    function playEnemyTelegraph() {
+      if (!audioState.ready) return;
+      const now = audioState.ctx.currentTime;
+      const osc = audioState.ctx.createOscillator();
+      const gain = audioState.ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(620, now);
+      osc.frequency.exponentialRampToValueAtTime(420, now + 0.11);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.045, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+      osc.connect(gain);
+      gain.connect(audioState.sfx);
+      osc.start(now);
+      osc.stop(now + 0.16);
+    }
+
+    function playEnemySwing() {
+      if (!audioState.ready) return;
+      const now = audioState.ctx.currentTime;
+      const noise = createNoiseSource(0.12);
+      const filter = audioState.ctx.createBiquadFilter();
+      const gain = audioState.ctx.createGain();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(1700, now);
+      filter.frequency.exponentialRampToValueAtTime(760, now + 0.12);
+      filter.Q.value = 3.2;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.065, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioState.sfx);
+      noise.start(now);
+      noise.stop(now + 0.13);
+    }
+
     function updateAudio(delta) {
       if (!audioState.ready || !audioState.ctx) return;
       const now = audioState.ctx.currentTime;
@@ -1177,9 +2875,6 @@
       const trafficNorm = Math.min(1, state.traffic.length / 8);
       const dangerNorm = Math.min(1, state.enemies.length / 7);
 
-      audioState.engineOsc.frequency.setTargetAtTime(72 + speedNorm * 36, now, 0.08);
-      audioState.engineLfo.frequency.setTargetAtTime(2.8 + speedNorm * 2.2, now, 0.12);
-      audioState.engineGain.gain.setTargetAtTime(0.018 + speedNorm * 0.022, now, 0.14);
       audioState.trafficFilter.frequency.setTargetAtTime(420 + trafficNorm * 520 + dangerNorm * 120, now, 0.2);
       audioState.trafficGain.gain.setTargetAtTime(0.015 + trafficNorm * 0.03 + speedNorm * 0.01, now, 0.16);
 
@@ -1354,6 +3049,9 @@
         knockback: 2,
         attackCd: 90 + Math.floor(Math.random() * 40), // longer initial cooldown so they don't attack before reachable
         attackFlash: 0,
+        attackSwing: 0,
+        attackHitDone: false,
+        attackCuePlayed: false,
         wobble: 0,
         chaseAggression: 0.35 + Math.random() * 0.15,  // moderate aggression - consistent approach speed
         thrustAnim: 0,
@@ -1398,6 +3096,7 @@
       view.w = rect.width;
       view.h = rect.height;
       view.scale = dpr;
+      _cachedRoad = null;
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
       canvas.style.width = rect.width + "px";
@@ -1429,16 +3128,25 @@
       orientationNote.classList.toggle("hidden", !showLandscapeNote);
     }
 
+    let _cachedRoad = null;
+    let _cachedRoadW = 0;
+    let _cachedRoadH = 0;
+
     function road() {
-      return {
+      if (_cachedRoadW === view.w && _cachedRoadH === view.h && _cachedRoad) return _cachedRoad;
+      _cachedRoadW = view.w;
+      _cachedRoadH = view.h;
+      _cachedRoad = {
         left: view.w * 0.08,
         right: view.w * 0.92,
         width: view.w * 0.84,
         laneWidth: view.w * 0.84 / NUM_LANES,
         horizon: view.h * 0.19,
-        playerMinY: view.h * 0.42,
-        playerMaxY: view.h * 0.84
+        // Let the rider use almost the full visible road instead of only the lower band.
+        playerMinY: view.h * 0.24,
+        playerMaxY: view.h * 0.94
       };
+      return _cachedRoad;
     }
 
     function laneX(lane) {
@@ -1448,14 +3156,22 @@
 
     function resetGame() {
       const r = road();
+      const cfg = difficultyConfig[selectedDifficulty];
       resetJoystick();
+      runCrystalsEarned = 0;
+      runStats = { maxCombo: 0, kills: 0, time: 0, perfectFinishers: 0, score: 0, dodges: 0 };
       state = {
         mode: "menu",
         frame: 0,
+        time: 0,
         score: 0,
-        speed: 4.2,
+        speed: cfg.baseSpeed,
+        currentZoneKey: ZONE_LIBRARY[0].key,
+        zoneTimer: 52,
+        zoneShift: 0,
         combo: 0,
         comboStage: 0,
+        comboPopupTimer: 0,
         comboDecay: 0,
         shake: 0,
         hitstop: 0,
@@ -1467,20 +3183,37 @@
         slashes: [],
         enemies: [],
         traffic: [],
+        powerUps: [],
+        storedPowerUp: null,
+        powerUpCooldown: 0,
+        slowMoTimer: 0,
+        ghostTimer: 0,
+        immunityTimer: 0,
+        bladeExtensionTimer: 0,
+        doubleScoreTimer: 0,
+        chainLightningCharges: 0,
+        lightningArcs: [],
         roadEnergy: 0,           // visual energy on road during combo
         flashOverlay: null,      // screen flash overlay
+        safeSpawnTimer: 0,
         player: {
           lane: 1,
           targetLane: 1,
           x: laneX(1),
           y: view.h * 0.74,
           targetY: view.h * 0.74,
+          dashX: 0,
+          dashY: 0,
           w: 28,
           h: 42,
+          maxHp: 3,
           hp: 3,
+          shield: 0,
           inv: 0,
           attacking: 0,
           attackTimer: 0,
+          dashTimer: 0,
+          dashCooldown: 0,
           hitFlash: 0,
           wobble: 0,
           dead: false,
@@ -1490,6 +3223,8 @@
         },
         director: createMomentDirector()
       };
+      setZone(ZONE_LIBRARY[0].key, false);
+      updateStoredPowerUpUi();
       syncHud();
       gameOverBox.classList.add("hidden");
       tipBox.classList.add("hidden");
@@ -1499,12 +3234,22 @@
       if (!state.player) {
         resetGame();
       }
+      missionPanelOpen = false;
+      toggleMissionPanel(false);
       state.mode = "menu";
       state.player.dead = false;
       state.player.inv = 0;
       state.player.attacking = 0;
       state.player.attackTimer = 0;
       state.player.hitFlash = 0;
+      state.comboPopupTimer = 0;
+      state.storedPowerUp = null;
+      state.ghostTimer = 0;
+      state.immunityTimer = 0;
+      state.bladeExtensionTimer = 0;
+      state.doubleScoreTimer = 0;
+      state.chainLightningCharges = 0;
+      state.lightningArcs = [];
       state.shake = 0;
       state.hitstop = 0;
       state.hitstopQueue = [];
@@ -1515,6 +3260,9 @@
       tipBox.classList.add("hidden");
       gameOverBox.classList.add("hidden");
       updateBestScoreLabel();
+      renderMissions();
+      refreshDifficultyUi();
+      updateStoredPowerUpUi();
     }
 
     function startGame() {
@@ -1524,8 +3272,10 @@
       app.classList.remove("menu-active");
       startScreen.classList.add("hidden");
       hideMenuPanels();
+      toggleMissionPanel(false);
       tipBox.classList.remove("hidden");
       updateBestScoreLabel();
+      refreshDifficultyUi();
     }
 
     function hideMenuPanels() {
@@ -1540,24 +3290,39 @@
     function syncHud() {
       scoreLabel.textContent = Math.floor(state.score);
       lifeLabel.textContent = String(state.player.hp);
-
-      const comboText = `${state.combo}x`;
+      crystalLabel.textContent = crystals;
+      const comboActive = state.combo > 0;
+      const comboText = comboActive ? `${state.combo}x` : "";
       comboLabel.textContent = comboText;
+      comboPopupLabel.textContent = comboActive ? comboText : "";
+      updateStoredPowerUpUi();
 
       // Combo escalation readability in HUD
       comboLabel.className = "";
+      comboPopup.className = "combo-popup hidden";
+      comboPopupLabel.className = "";
+      comboLabel.parentElement.classList.toggle("idle", !comboActive);
       topbar.className = "topbar";
       attackBtn.classList.remove("finisher-glow");
+      dashBtn.classList.toggle("cooldown", state.player.dashCooldown > 0 || state.player.dashTimer > 0);
 
       if (state.comboStage === 2) {
         comboLabel.classList.add("finisher-ready");
+        comboPopup.classList.add("finisher-ready");
         topbar.classList.add("combo-fire");
         attackBtn.classList.add("finisher-glow");
       } else if (state.comboStage === 1) {
         comboLabel.classList.add("stage2");
+        comboPopup.classList.add("stage2");
         topbar.classList.add("combo-hot");
-      } else if (state.combo > 0) {
+      } else if (comboActive) {
         comboLabel.classList.add("stage1");
+        comboPopup.classList.add("stage1");
+      }
+
+      if (comboActive && state.comboPopupTimer > 0 && state.mode === "playing") {
+        comboPopup.classList.remove("hidden");
+        comboPopup.classList.add("show");
       }
     }
 
@@ -1571,6 +3336,29 @@
       const r = road();
       const step = view.h * 0.09;
       state.player.targetY = Math.max(r.playerMinY, Math.min(r.playerMaxY, state.player.targetY + dir * step));
+    }
+
+    // Dash is a short reactive evade with brief invulnerability and a visible cooldown.
+    function activateDash() {
+      const player = state.player;
+      if (!player || player.dead || state.mode !== "playing") return;
+      if (player.dashCooldown > 0 || player.dashTimer > 0 || player.attacking > 0) return;
+
+      const inputX = joystickState.active ? joystickState.x : 0;
+      const inputY = joystickState.active ? joystickState.y : -1;
+      const len = Math.hypot(inputX, inputY) || 1;
+      const dirX = inputX / len;
+      const dirY = inputY / len;
+
+      player.dashTimer = 12;
+      player.dashCooldown = 81;
+      player.inv = Math.max(player.inv, 12);
+      player.attacking = 0;
+      player.attackTimer = 0;
+      player.dashX = dirX * road().laneWidth * 0.55;
+      player.dashY = dirY * view.h * 0.18;
+      state.flashOverlay = { color: "#6df7ff", alpha: 0.12, life: 8 };
+      addParticles(player.x, player.y, "#6df7ff", 16, 4.5);
     }
 
     function setJoystickVisual() {
@@ -1607,31 +3395,35 @@
     function applyJoystick(delta) {
       if (!joystickState.active || state.player.dead || state.mode === "dead") return;
 
-      const deadzone = 0.22;
+      const deadzone = 0.12;
       const laneTriggerThreshold = 0.68;
       const laneReleaseThreshold = 0.26;
-      const verticalStrength = Math.abs(joystickState.y) > deadzone ? joystickState.y : 0;
       const horizontalStrength = joystickState.x;
+      const verticalDominant = Math.abs(joystickState.y) > Math.abs(joystickState.x) * 0.75;
+      const verticalStrength = Math.abs(joystickState.y) > deadzone
+        ? Math.sign(joystickState.y) * Math.pow(Math.abs(joystickState.y), 0.75)
+        : 0;
+      const laneInput = verticalDominant ? 0 : horizontalStrength;
 
       state.player.laneStickCooldown = Math.max(0, (state.player.laneStickCooldown || 0) - delta * 60);
 
-      if (Math.abs(horizontalStrength) <= laneReleaseThreshold) {
+      if (Math.abs(laneInput) <= laneReleaseThreshold) {
         state.player.laneStickArmed = true;
       }
 
       if (
         state.player.laneStickArmed &&
         state.player.laneStickCooldown <= 0 &&
-        Math.abs(horizontalStrength) >= laneTriggerThreshold
+        Math.abs(laneInput) >= laneTriggerThreshold
       ) {
-        moveLane(horizontalStrength > 0 ? 1 : -1);
+        moveLane(laneInput > 0 ? 1 : -1);
         state.player.laneStickCooldown = 12;
         state.player.laneStickArmed = false;
       }
 
       if (verticalStrength !== 0) {
         const r = road();
-        const verticalSpeed = view.h * 0.3;
+        const verticalSpeed = view.h * 0.48;
         state.player.targetY = Math.max(
           r.playerMinY,
           Math.min(r.playerMaxY, state.player.targetY + verticalStrength * verticalSpeed * delta)
@@ -1741,41 +3533,40 @@
       playSwordWhoosh();
 
       const finisher = state.comboStage === 2;
-      const range = view.h * 0.28;
-      const finisherCenter = {
+      const bladeBoost = state.bladeExtensionTimer > 0 ? 1.26 : 1;
+      // Keep the weapon at a short-mid guard reach: around two body lengths forward, still tighter than the old lane sweep.
+      const strikeCenter = {
         x: player.x,
-        y: player.y - Math.max(player.h * 0.75, 32)
+        y: player.y - Math.max(player.h * 0.42, 16)
       };
-      const finisherRadius = Math.max(player.w * 2.15, 56);
+      const strikeRadiusX = Math.max(player.w * (finisher ? 1.7 : 1.34) * bladeBoost, 26);
+      const strikeRadiusY = Math.max(player.h * (finisher ? 1.95 : 1.58) * bladeBoost, 54);
       player.attacking = state.comboStage + 1;
       player.attackTimer = 16;
 
       const targets = state.enemies
         .filter((enemy) => {
           if (enemy.dying) return false;
-
-          if (!finisher) {
-            return enemy.lane === player.targetLane && enemy.y < player.y && enemy.y > player.y - range;
-          }
-
-          const dx = enemy.x - finisherCenter.x;
-          const dy = enemy.y - finisherCenter.y;
-          return (dx * dx + dy * dy) <= finisherRadius * finisherRadius;
+          const dx = enemy.x - strikeCenter.x;
+          const dy = enemy.y - strikeCenter.y;
+          const nx = dx / strikeRadiusX;
+          const ny = dy / strikeRadiusY;
+          return (nx * nx + ny * ny) <= 1;
         })
         .sort((a, b) => {
-          if (!finisher) return b.y - a.y;
-          const da = (a.x - finisherCenter.x) ** 2 + (a.y - finisherCenter.y) ** 2;
-          const db = (b.x - finisherCenter.x) ** 2 + (b.y - finisherCenter.y) ** 2;
+          const da = (a.x - strikeCenter.x) ** 2 + (a.y - strikeCenter.y) ** 2;
+          const db = (b.x - strikeCenter.x) ** 2 + (b.y - strikeCenter.y) ** 2;
           return da - db;
         });
 
       let hits = 0;
       const maxTargets = finisher ? 2 : 1;
+      let defeatedEnemyForReward = null;
 
       // Perfect finisher detection
-      // Perfect if the enemy is almost on top of the strike center.
+      // Perfect if the enemy is almost on top of the close strike center.
       const isPerfect = finisher && targets.length > 0 &&
-        Math.hypot(targets[0].x - finisherCenter.x, targets[0].y - finisherCenter.y) < finisherRadius * 0.5;
+        Math.hypot(targets[0].x - strikeCenter.x, targets[0].y - strikeCenter.y) < Math.min(strikeRadiusX, strikeRadiusY) * 0.52;
 
       for (let i = 0; i < Math.min(targets.length, maxTargets); i += 1) {
         const enemy = targets[i];
@@ -1785,11 +3576,16 @@
         enemy.wobble = finisher ? 2.2 : 1.4;
 
         if (enemy.hp <= 0 && !enemy.dying) {
-          enemy.dying = 32;
-          enemy.ddir = (i % 2 === 0) ? 1 : -1;
-          enemy.deathDelay = finisher ? i * 4 : 0;  // staggered death for chain
-          enemy.deathStyle = finisher ? (isPerfect ? "perfect" : "finisher") : "normal";
-          enemy.knockback = isPerfect ? 4 + i * 1.5 : finisher ? 3 + i : 2;
+          defeatEnemy(enemy, {
+            ddir: (i % 2 === 0) ? 1 : -1,
+            deathDelay: finisher ? i * 4 : 0,
+            deathStyle: finisher ? (isPerfect ? "perfect" : "finisher") : "normal",
+            knockback: isPerfect ? 4 + i * 1.5 : finisher ? 3 + i : 2
+          });
+          defeatedEnemyForReward = defeatedEnemyForReward || enemy;
+          if (state.chainLightningCharges > 0) {
+            triggerChainLightning(enemy);
+          }
         }
 
         const color = isPerfect ? "#ffcc44" : finisher ? "#ff6936" : state.comboStage === 1 ? "#6df7ff" : "#ffe45c";
@@ -1825,8 +3621,11 @@
         const scoreMulti = isPerfect ? 20 : finisher ? 12 : 5;
         state.combo += hits;
         state.comboStage = finisher ? 0 : Math.min(2, state.comboStage + 1);
+        state.comboPopupTimer = finisher ? 92 : 72;
         state.comboDecay = 300; // combo decay timer
-        state.score += hits * scoreMulti;
+        state.score += hits * scoreMulti * difficultyConfig[selectedDifficulty].scoreMult * getScoreMultiplier();
+        runStats.maxCombo = Math.max(runStats.maxCombo, state.combo);
+        updateMissionProgress("maxCombo", runStats.maxCombo);
 
         // Screen effects scaled to impact
         if (isPerfect) {
@@ -1857,6 +3656,8 @@
         }
         if (isPerfect) {
           detectClipMoment("perfect-finisher", { hits, combo: state.combo });
+          runStats.perfectFinishers += 1;
+          updateMissionProgress("perfectFinishers", runStats.perfectFinishers);
         }
         if (state.combo >= 8) {
           detectClipMoment("high-combo", { combo: state.combo });
@@ -1864,9 +3665,16 @@
 
         // Aura boost
         player.auraIntensity = Math.min(1, player.auraIntensity + (finisher ? 0.6 : 0.2));
+
+        // Full combo rewards should trigger on a successful finisher hit, not only on a kill.
+        if (finisher) {
+          const rewardSource = defeatedEnemyForReward || targets[0] || null;
+          trySpawnPowerUp(rewardSource, isPerfect);
+        }
       } else {
         state.combo = 0;
         state.comboStage = 0;
+        state.comboPopupTimer = 0;
         state.comboDecay = 0;
         player.auraIntensity *= 0.3;
       }
@@ -1878,6 +3686,9 @@
       const r = road();
       const md = state.director;
       const player = state.player;
+      const cfg = difficultyConfig[selectedDifficulty];
+      const difficultyScale = getRunDifficultyScale();
+      const earlyRun = state.time < 45;
 
       let pack, lane;
 
@@ -1892,30 +3703,40 @@
         pack = 1; // single enemies during clip; sequence spawner handles aligned groups
       } else {
         // Normal spawning
-        pack = Math.random() < 0.28 ? 2 : 1;
+        pack = earlyRun ? 1 : (Math.random() < 0.28 ? 2 : 1);
         lane = Math.floor(Math.random() * NUM_LANES);
+      }
+
+      if (state.time < 20 && lane === player.targetLane) {
+        lane = (lane + 1 + Math.floor(Math.random() * (NUM_LANES - 1))) % NUM_LANES;
       }
 
       for (let i = 0; i < pack; i += 1) {
         const l = pack > 1 ? (lane + i) % NUM_LANES : lane;
+        const variant = Math.random() < 0.5 ? "raider" : "specter";
 
         state.enemies.push({
           lane: l,
           x: laneX(l),
           y: r.horizon - 42 - i * 22,
-          hp: 2 + (state.score > 180 ? 1 : 0),
+          hp: 2 + cfg.enemyHpBonus + (state.score > 180 ? 1 : 0),
           hitFlash: 0,
           dying: 0,
           ddir: 1,
           deathDelay: 0,
           deathStyle: "normal",
           knockback: 2,
-          attackCd: 44 + Math.floor(Math.random() * 52),
+          attackCd: (44 + Math.floor(Math.random() * 52)) * (1.8 - difficultyScale * 0.6),
           attackFlash: 0,
+          attackSwing: 0,
+          attackHitDone: false,
+          attackCuePlayed: false,
           wobble: 0,
-          chaseAggression: md.clipWindow ? 0.7 + Math.random() * 0.3 : 0.3 + Math.random() * 0.4,
+          chaseAggression: (md.clipWindow ? 0.55 + Math.random() * 0.2 : 0.14 + Math.random() * 0.26) * cfg.aggression * difficultyScale,
           thrustAnim: 0,
           sequenceLocked: false,
+          variant,
+          skillScale: difficultyScale,
         });
       }
     }
@@ -1924,6 +3745,7 @@
       const r = road();
       const md = state.director;
       const player = state.player;
+      const difficultyScale = getRunDifficultyScale();
 
       let lane;
 
@@ -1941,19 +3763,36 @@
         lane = Math.floor(Math.random() * NUM_LANES);
       }
 
+      if (state.time < 20 && lane === player.targetLane) {
+        lane = (lane + 1 + Math.floor(Math.random() * (NUM_LANES - 1))) % NUM_LANES;
+      }
+
       const car = VEHICLES[Math.floor(Math.random() * VEHICLES.length)];
       state.traffic.push({
         lane,
         x: laneX(lane),
         y: r.horizon - 36,
         vehicle: car,
-        speed: state.speed * (0.56 + Math.random() * 0.25)
+        speed: state.speed * (0.42 + Math.random() * 0.18 + difficultyScale * 0.18) * (selectedDifficulty === "hard" ? 1.04 : 0.98)
       });
     }
 
-    function damagePlayer() {
+    function damagePlayer(hitSource = null) {
       const player = state.player;
       if (player.dead || player.inv > 0) return;
+      if (state.immunityTimer > 0) {
+        addParticles(player.x, player.y, "#ffe45c", 10, 3.5);
+        return;
+      }
+      if (player.dashTimer > 0) return;
+      if (player.shield > 0) {
+        player.shield -= 1;
+        state.flashOverlay = { color: "#6df7ff", alpha: 0.16, life: 10 };
+        addParticles(player.x, player.y, "#6df7ff", 20, 5);
+        showToastMessage("Shield", 1200);
+        syncHud();
+        return;
+      }
       playDamageHit();
       player.hp -= 1;
       player.inv = 72;
@@ -1962,19 +3801,39 @@
       state.shake = 10;
       state.combo = 0;
       state.comboStage = 0;
+      state.comboPopupTimer = 0;
       state.comboDecay = 0;
       player.auraIntensity *= 0.1;
       state.director.survivalStreak = 0;
       addParticles(player.x, player.y, "#ff4d6d", 20, 6);
+      // Impact sparks make enemy hits readable at the moment life is lost.
+      if (hitSource && hitSource.x !== undefined && hitSource.y !== undefined) {
+        addParticles((player.x + hitSource.x) * 0.5, (player.y + hitSource.y) * 0.5, "#ff9a5c", 10, 4);
+      }
       syncHud();
       if (player.hp <= 0) {
         player.dead = true;
         state.mode = "dead";
         const best = Math.max(loadBestScore(), Math.floor(state.score));
-        localStorage.setItem("ninja-racer-best-score", String(best));
+        writeLocalJson("best-score", best);
+        if (!hardUnlocked && best >= 500) {
+          hardUnlocked = true;
+          storage.set("hard-unlocked", true);
+        }
+        const scoreReward = Math.floor(state.score / 10);
+        if (scoreReward > 0) earnCrystals(scoreReward, "run reward");
         updateBestScoreLabel();
+        runStats.score = Math.floor(state.score);
+        updateMissionProgress("score", runStats.score);
+        updateMissionProgress("time", Math.floor(runStats.time));
+        goBestScore.textContent = best;
+        goEarnedCrystals.textContent = `+${runCrystalsEarned}`;
+        goTotalCrystals.textContent = crystals;
+        goDifficulty.textContent = selectedDifficulty === "hard" ? "Hardcore" : "Normal";
+        goMessage.textContent = runCrystalsEarned > 0 ? `You earned ✦${runCrystalsEarned} this run.` : "No crystals earned this run.";
         gameOverText.textContent = `Score: ${Math.floor(state.score)}`;
         gameOverBox.classList.remove("hidden");
+        refreshDifficultyUi();
       }
     }
 
@@ -1993,8 +3852,31 @@
         return;
       }
 
-      state.score += delta * 2.2;
-      state.speed = Math.min(4.2 + state.score / 140, 10.6);
+      state.score += delta * 2.2 * getScoreMultiplier();
+      state.time += delta;
+      if (state.comboPopupTimer > 0) state.comboPopupTimer = Math.max(0, state.comboPopupTimer - delta * 60);
+      runStats.time += delta;
+      updateMissionProgress("time", Math.floor(runStats.time));
+      const cfg = difficultyConfig[selectedDifficulty];
+      const difficultyScale = getRunDifficultyScale();
+      const slowFactor = state.slowMoTimer > 0 ? 0.62 : 1;
+      state.speed = Math.min(
+        cfg.baseSpeed * (0.76 + difficultyScale * 0.24) + (state.score / 140) * Math.max(0.4, difficultyScale),
+        cfg.maxSpeed
+      );
+      if (state.powerUpCooldown > 0) state.powerUpCooldown = Math.max(0, state.powerUpCooldown - delta * 60);
+      if (state.slowMoTimer > 0) state.slowMoTimer = Math.max(0, state.slowMoTimer - delta);
+      if (state.ghostTimer > 0) state.ghostTimer = Math.max(0, state.ghostTimer - delta);
+      if (state.immunityTimer > 0) state.immunityTimer = Math.max(0, state.immunityTimer - delta);
+      if (state.bladeExtensionTimer > 0) state.bladeExtensionTimer = Math.max(0, state.bladeExtensionTimer - delta);
+      if (state.doubleScoreTimer > 0) state.doubleScoreTimer = Math.max(0, state.doubleScoreTimer - delta);
+      if (state.zoneShift > 0) state.zoneShift = Math.max(0, state.zoneShift - delta * 1.5);
+      state.zoneTimer -= delta;
+      if (state.zoneTimer <= 0) {
+        setZone(pickNextZoneKey(state.currentZoneKey), true);
+      }
+      state.lightningArcs.forEach((arc) => { arc.life -= delta * 60; });
+      if (state.safeSpawnTimer > 0) state.safeSpawnTimer = Math.max(0, state.safeSpawnTimer - delta);
 
       if (state.tipTimer > 0) {
         state.tipTimer -= delta * 60;
@@ -2029,6 +3911,7 @@
         if (state.comboDecay <= 0 && state.combo > 0) {
           state.combo = 0;
           state.comboStage = 0;
+          state.comboPopupTimer = 0;
           state.player.auraIntensity *= 0.3;
           syncHud();
         }
@@ -2054,23 +3937,36 @@
       const releaseSpawnMod = md.releaseActive ? 2.5 : 1;  // slower spawns during release
 
       if (state.enemyTimer <= 0) {
-        if (!md.releaseActive) {
+        if (!md.releaseActive && !(state.time < 45 && state.safeSpawnTimer > 0)) {
           spawnEnemy();
+          if (state.time < 45) state.safeSpawnTimer = 2.8 - difficultyScale * 1.1;
         }
-        const baseInterval = Math.max(22, 62 - state.score * 0.06);
-        state.enemyTimer = (md.clipWindow ? baseInterval * 0.65 : baseInterval) * releaseSpawnMod;
+        const baseInterval = Math.max(36, 150 - difficultyScale * 84 - state.score * 0.03);
+        state.enemyTimer = ((md.clipWindow ? baseInterval * 0.8 : baseInterval) * releaseSpawnMod) * cfg.enemyRate;
       }
       if (state.trafficTimer <= 0) {
         spawnTraffic();
-        const baseInterval = Math.max(28, 82 - state.score * 0.05);
+        const baseInterval = Math.max(44, 170 - difficultyScale * 92 - state.score * 0.025);
         const clipMod = md.clipWindow ? 0.8 : 1;
-        state.trafficTimer = baseInterval * clipMod * (md.releaseActive ? 1.8 : 1);
+        state.trafficTimer = baseInterval * clipMod * (md.releaseActive ? 1.8 : 1) * cfg.trafficRate;
       }
 
       const player = state.player;
       if (player.laneStickCooldown > 0) player.laneStickCooldown -= delta * 60;
-      player.x += (laneX(player.targetLane) - player.x) * 0.18;
-      player.y += (player.targetY - player.y) * 0.16;
+      if (player.dashCooldown > 0) player.dashCooldown = Math.max(0, player.dashCooldown - delta * 60);
+      if (player.dashTimer > 0) {
+        const dashStep = Math.min(1, delta * 60 / Math.max(1, player.dashTimer));
+        player.x += player.dashX * dashStep;
+        player.y += player.dashY * dashStep;
+        player.dashX *= 0.72;
+        player.dashY *= 0.72;
+        player.dashTimer -= delta * 60;
+        player.inv = Math.max(player.inv, 4);
+        addParticles(player.x, player.y, "rgba(109,247,255,0.9)", 2, 2.4);
+      } else {
+        player.x += (laneX(player.targetLane) - player.x) * 0.18;
+        player.y += (player.targetY - player.y) * 0.16;
+      }
       player.lane = player.targetLane;
       player.wobble *= 0.84;
       if (player.inv > 0) player.inv -= delta * 60;
@@ -2103,11 +3999,11 @@
         const aggression = enemy.chaseAggression || 0.4;
         const targetY = player.y - 70;
         const baseApproach = Math.min(state.speed * 0.58, Math.max(0.8, (targetY - enemy.y) * 0.028));
-        enemy.y += baseApproach * (1 + aggression * 0.3);
+        enemy.y += baseApproach * (0.72 + (enemy.skillScale || difficultyScale) * 0.38) * (1 + aggression * 0.18) * slowFactor;
 
         // Lane tracking - enemies actively hunt the player
         // Sequence-locked enemies stay in their lane to preserve alignment
-        const trackChance = md.clipWindow ? 0.025 * aggression : 0.012;
+        const trackChance = (md.clipWindow ? 0.014 : 0.006) * Math.max(0.45, enemy.skillScale || difficultyScale) * (0.8 + aggression * 0.5);
         if (!enemy.sequenceLocked && Math.random() < trackChance && enemy.lane !== player.targetLane) {
           enemy.lane += player.targetLane > enemy.lane ? 1 : -1;
           enemy.lane = Math.max(0, Math.min(NUM_LANES - 1, enemy.lane));
@@ -2117,30 +4013,76 @@
         enemy.x += (laneX(enemy.lane) - enemy.x) * 0.14;
         if (enemy.hitFlash > 0) enemy.hitFlash -= delta * 60;
         if (enemy.attackFlash > 0) enemy.attackFlash -= delta * 60;
+        if (enemy.attackSwing > 0) enemy.attackSwing -= delta * 60;
         if (enemy.thrustAnim > 0) enemy.thrustAnim -= delta * 60;
         enemy.wobble *= 0.88;
 
-        enemy.attackCd -= delta * 60;
+        enemy.attackCd -= delta * 60 * slowFactor;
         if (enemy.attackCd <= 0) {
-          enemy.attackCd = 70 + Math.random() * 50;
+          enemy.attackCd = (74 + Math.random() * 56) * (1.55 - (enemy.skillScale || difficultyScale) * 0.45);
           if (enemy.lane === player.targetLane && Math.abs(enemy.y - player.y) < 88) {
-            enemy.attackFlash = 18;
+            // Give the player a clearer warning before the sword actually connects.
+            enemy.attackFlash = 34;
+            enemy.attackSwing = 0;
+            enemy.attackHitDone = false;
+            enemy.attackCuePlayed = false;
+            enemy.thrustAnim = Math.max(enemy.thrustAnim, 10);
+            playEnemyTelegraph();
           }
         }
-        if (enemy.attackFlash > 8 && enemy.lane === player.targetLane && Math.abs(enemy.y - player.y) < 76) {
-          damagePlayer();
-          enemy.attackFlash = 0;
+        if (enemy.attackFlash > 0 && !enemy.attackCuePlayed && enemy.attackFlash <= 12) {
+          enemy.attackCuePlayed = true;
+          enemy.attackSwing = 14;
+          playEnemySwing();
+        }
+        if (
+          enemy.attackFlash > 0 &&
+          enemy.attackFlash <= 7 &&
+          !enemy.attackHitDone &&
+          enemy.lane === player.targetLane &&
+          Math.abs(enemy.y - player.y) < 78
+        ) {
+          enemy.attackHitDone = true;
+          damagePlayer(enemy);
+        }
+        if (enemy.attackFlash <= 0) {
+          enemy.attackHitDone = false;
+          enemy.attackCuePlayed = false;
         }
         if (!player.dead && enemy.lane === player.lane && Math.abs(enemy.y - player.y) < 28) {
-          damagePlayer();
+          damagePlayer(enemy);
         }
       });
 
       state.traffic.forEach((car) => {
-        car.y += car.speed * delta * 60;
+        car.y += car.speed * delta * 60 * slowFactor;
         car.x += (laneX(car.lane) - car.x) * 0.14;
-        if (!player.dead && car.lane === player.lane && Math.abs(car.y - player.y) < 34) {
-          damagePlayer();
+        if (!player.dead && state.ghostTimer <= 0 && car.lane === player.lane && Math.abs(car.y - player.y) < 34) {
+          car._hitPlayer = true;
+          damagePlayer(car);
+        }
+        if (!car._hitPlayer && !car._dodgeAwarded && car.y > player.y + 40 && car.lane === player.lane) {
+          car._dodgeAwarded = true;
+          runStats.dodges += 1;
+          updateMissionProgress("dodges", runStats.dodges);
+        }
+      });
+
+      // Power-ups float with the road and get collected by contact with the rider.
+      state.powerUps.forEach((powerUp) => {
+        const r = road();
+        powerUp.y += state.speed * powerUp.travelSpeed * delta * 60 * slowFactor;
+        powerUp.x += powerUp.driftX * delta * 60;
+        if (powerUp.x < r.left + 18 || powerUp.x > r.right - 18) {
+          powerUp.driftX *= -1;
+          powerUp.x = Math.max(r.left + 18, Math.min(r.right - 18, powerUp.x));
+        }
+        powerUp.life -= delta * 60;
+        powerUp.bob += delta * 4.5;
+        powerUp.pulse += delta * 7;
+        if (Math.abs(powerUp.x - player.x) < 24 && Math.abs(powerUp.y - player.y) < 32) {
+          powerUp.collected = true;
+          collectPowerUp(powerUp);
         }
       });
 
@@ -2157,6 +4099,8 @@
 
       state.enemies = state.enemies.filter((enemy) => enemy.y < view.h + 120 && !(enemy.hp <= 0 && enemy.dying <= 0));
       state.traffic = state.traffic.filter((car) => car.y < view.h + 120);
+      state.powerUps = state.powerUps.filter((powerUp) => !powerUp.collected && powerUp.life > 0 && powerUp.y < view.h + 70);
+      state.lightningArcs = state.lightningArcs.filter((arc) => arc.life > 0);
       state.particles = state.particles.filter((p) => p.life > 0);
       state.slashes = state.slashes.filter((s) => s.life > 0);
       if (state.shake > 0) state.shake *= 0.82;
@@ -2168,21 +4112,22 @@
 
     function drawRoad() {
       const r = road();
+      const zone = getZoneTheme();
       const sky = ctx.createLinearGradient(0, 0, 0, r.horizon);
-      sky.addColorStop(0, "#090b18");
-      sky.addColorStop(1, "#25104f");
+      sky.addColorStop(0, zone.skyTop);
+      sky.addColorStop(1, zone.skyBottom);
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, view.w, r.horizon + 10);
 
       const glow = ctx.createRadialGradient(view.w * 0.5, r.horizon, 8, view.w * 0.5, r.horizon, view.w * 0.6);
-      glow.addColorStop(0, "rgba(118, 77, 255, 0.36)");
+      glow.addColorStop(0, zone.horizonGlow);
       glow.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = glow;
       ctx.fillRect(0, r.horizon - 100, view.w, 200);
 
       const cityGlow = ctx.createLinearGradient(0, r.horizon - 44, 0, r.horizon + 12);
       cityGlow.addColorStop(0, "rgba(0, 0, 0, 0)");
-      cityGlow.addColorStop(1, "rgba(255, 91, 116, 0.12)");
+      cityGlow.addColorStop(1, zone.cityGlow);
       ctx.fillStyle = cityGlow;
       ctx.fillRect(0, r.horizon - 44, view.w, 60);
 
@@ -2193,26 +4138,38 @@
         const x = i * skylineWidth;
         const variance = ((i * 17.3) % 7) / 7;
         const h = 10 + variance * 34;
-        ctx.fillStyle = variance > 0.5 ? "rgba(87, 99, 164, 0.28)" : "rgba(60, 68, 110, 0.22)";
+        ctx.fillStyle = variance > 0.5 ? zone.skylineA : zone.skylineB;
         ctx.fillRect(x, r.horizon - h, skylineWidth - 2, h);
       }
       ctx.restore();
 
       const roadFill = ctx.createLinearGradient(0, r.horizon, 0, view.h);
-      roadFill.addColorStop(0, "#171a33");
-      roadFill.addColorStop(1, "#090d1f");
+      roadFill.addColorStop(0, zone.roadTop);
+      roadFill.addColorStop(1, zone.roadBottom);
       ctx.fillStyle = roadFill;
       ctx.fillRect(r.left, r.horizon, r.width, view.h - r.horizon);
+
+      // Zone dust/haze adds atmosphere without changing lane geometry or fairness.
+      if (zone.dust) {
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = zone.dust;
+        for (let i = 0; i < 6; i += 1) {
+          const hazeY = r.horizon + ((state.frame * 0.012 + i * 0.18) % 1) * (view.h - r.horizon);
+          ctx.fillRect(r.left, hazeY, r.width, 18 + i * 4);
+        }
+        ctx.restore();
+      }
 
       // Road energy overlay during combo
       if (state.roadEnergy > 0.01) {
         ctx.save();
-        const energyAlpha = state.roadEnergy * 0.12;
+        const energyAlpha = state.roadEnergy * 0.16;
         const energyColor = state.comboStage === 2
-          ? `rgba(255, 105, 54, ${energyAlpha})`
+          ? `rgba(255, 123, 64, ${energyAlpha})`
           : state.comboStage === 1
-            ? `rgba(109, 247, 255, ${energyAlpha})`
-            : `rgba(155, 125, 255, ${energyAlpha})`;
+            ? `rgba(255, 188, 96, ${energyAlpha * 0.92})`
+            : `rgba(255, 160, 92, ${energyAlpha * 0.82})`;
         ctx.fillStyle = energyColor;
         ctx.fillRect(r.left, r.horizon, r.width, view.h - r.horizon);
 
@@ -2221,8 +4178,8 @@
         for (let i = 0; i < lineCount; i++) {
           const frac = ((state.frame * 0.04 + i * 0.15) % 1);
           const y = r.horizon + frac * (view.h - r.horizon);
-          ctx.globalAlpha = state.roadEnergy * 0.3 * (1 - frac);
-          ctx.strokeStyle = state.comboStage === 2 ? "#ff6936" : "#9b7dff";
+          ctx.globalAlpha = state.roadEnergy * 0.38 * (1 - frac);
+          ctx.strokeStyle = state.comboStage === 2 ? "#ff7b40" : "#ffb65c";
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(r.left + 4, y);
@@ -2234,19 +4191,44 @@
 
       // Release moment - brighter road
       if (state.director.releaseActive) {
-        const relAlpha = Math.min(0.08, state.director.releaseTimer / 60 * 0.08);
+        const relAlpha = Math.min(0.12, state.director.releaseTimer / 60 * 0.12);
         ctx.save();
         ctx.globalAlpha = relAlpha;
-        ctx.fillStyle = "#6df7ff";
+        ctx.fillStyle = "#ffb55e";
         ctx.fillRect(r.left, r.horizon, r.width, view.h - r.horizon);
         ctx.restore();
       }
 
-      ctx.fillStyle = "#111";
+      // Lane telegraphs make enemy attacks readable even when the player is tracking traffic instead of sprites.
+      state.enemies.forEach((enemy) => {
+        if (enemy.dying || enemy.attackFlash <= 0) return;
+        const laneLeft = r.left + r.laneWidth * enemy.lane;
+        const telegraph = Math.min(1, enemy.attackFlash / 34);
+        ctx.save();
+        ctx.globalAlpha = 0.1 + telegraph * 0.22;
+        const grad = ctx.createLinearGradient(0, enemy.y - 46, 0, view.h);
+        grad.addColorStop(0, "rgba(255, 116, 80, 0)");
+        grad.addColorStop(0.15, "rgba(255, 126, 72, 0.36)");
+        grad.addColorStop(1, "rgba(255, 116, 80, 0)");
+        ctx.fillStyle = grad;
+        ctx.fillRect(laneLeft + 2, enemy.y - 46, r.laneWidth - 4, view.h - enemy.y + 46);
+        if (enemy.attackFlash <= 12) {
+          ctx.globalAlpha = 0.28 + Math.sin(state.frame * 0.35) * 0.1;
+          ctx.strokeStyle = "#ffd07a";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(laneLeft + 10, enemy.y + 6);
+          ctx.lineTo(laneLeft + r.laneWidth - 10, enemy.y + 18);
+          ctx.stroke();
+        }
+        ctx.restore();
+      });
+
+      ctx.fillStyle = zone.shoulder;
       ctx.fillRect(0, r.horizon, r.left, view.h - r.horizon);
       ctx.fillRect(r.right, r.horizon, view.w - r.right, view.h - r.horizon);
 
-      ctx.strokeStyle = "#ff9c33";
+      ctx.strokeStyle = zone.edge;
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(r.left, r.horizon);
@@ -2261,7 +4243,7 @@
         ctx.save();
         ctx.setLineDash([18, 20]);
         ctx.lineDashOffset = dashOffset;
-        ctx.strokeStyle = "rgba(109, 132, 255, 0.34)";
+        ctx.strokeStyle = zone.lane;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(x, r.horizon);
@@ -2276,7 +4258,7 @@
         const frac = (state.frame * 0.022 + i * 0.1) % 1;
         const y = r.horizon + frac * (view.h - r.horizon);
         const lineWidth = 2 + frac * 4;
-        ctx.strokeStyle = "#7b68ff";
+        ctx.strokeStyle = zone.streak;
         ctx.lineWidth = lineWidth;
         ctx.beginPath();
         ctx.moveTo(r.left + 6, y);
@@ -2349,6 +4331,35 @@
       const scale = perspectiveScale(enemy.y);
       const w = 18 * scale;
       const h = 32 * scale;
+      const variant = enemy.variant || "raider";
+      // Inked-shounen oni palette (red raider / purple specter). Same field names as before
+      // so any external reference keeps working.
+      const variantPalette = variant === "specter"
+        ? {
+            body: "#2c1340",
+            armor: "#4a1c66",
+            mask: "#7a2db3",
+            sash: "#b9b3ff",
+            trim: "#9a4be0",
+            eye: "#fff4d4",
+            blade: "#dde6ee",
+            engine: "#7a2db3",
+            warning: "#ffd76a",
+            line: "#0a0413"
+          }
+        : {
+            body: "#5a1726",
+            armor: "#8a1f33",
+            mask: "#c92a3f",
+            sash: "#f0d44a",
+            trim: "#e84456",
+            eye: "#fff4d4",
+            blade: "#e8d8c0",
+            engine: "#c92a3f",
+            warning: "#ffd76a",
+            line: "#0a0306"
+          };
+      const ink = variantPalette.line;
       ctx.save();
       ctx.translate(enemy.x, enemy.y);
 
@@ -2356,20 +4367,12 @@
         const age = (32 - enemy.dying) / 32;
 
         if (enemy.deathStyle === "perfect") {
-          // Perfect finisher death - dramatic tumble with glow
           ctx.rotate((enemy.ddir || 1) * age * 2.2);
           ctx.globalAlpha = Math.max(0, 1 - age * 0.9);
-          // Death glow
-          ctx.shadowColor = "#ffcc44";
-          ctx.shadowBlur = 20 * (1 - age);
         } else if (enemy.deathStyle === "finisher") {
-          // Finisher death - sideways throw with sparks
           ctx.rotate((enemy.ddir || 1) * age * 1.8);
           ctx.globalAlpha = Math.max(0, 1 - age * 0.85);
-          ctx.shadowColor = "#ff6936";
-          ctx.shadowBlur = 14 * (1 - age);
         } else {
-          // Normal death
           ctx.rotate((enemy.ddir || 1) * age * 1.5);
           ctx.globalAlpha = Math.max(0, 1 - age * 0.82);
         }
@@ -2377,91 +4380,214 @@
         ctx.rotate(Math.sin(state.frame * 0.07) * enemy.wobble * 0.08);
       }
 
-      // Thrust animation for aggressive chase
       if (enemy.thrustAnim > 0 && !enemy.dying) {
         const thrustScale = 1 + (enemy.thrustAnim / 12) * 0.15;
         ctx.scale(1, thrustScale);
       }
 
-      ctx.globalAlpha *= 0.3;
+      // Ground shadow
+      ctx.globalAlpha *= 0.32;
       ctx.fillStyle = "#000";
       ctx.beginPath();
       ctx.ellipse(0, h * 0.58, w * 0.72, 4 * scale, 0, 0, Math.PI * 2);
       ctx.fill();
-      ctx.globalAlpha /= 0.3;
+      ctx.globalAlpha /= 0.32;
 
-      // Enemy body - slightly different tint when chasing aggressively
       const isAggressive = (enemy.chaseAggression || 0) > 0.6 && !enemy.dying;
-      ctx.fillStyle = enemy.hitFlash > 0 ? "#fff2f6" : isAggressive ? "#5c1128" : "#4c0f24";
+
+      // === Bike body — flat block, ink outline ===
+      ctx.fillStyle = enemy.hitFlash > 0 ? "#fff2f6" : (isAggressive ? variantPalette.armor : variantPalette.body);
       ctx.beginPath();
-      ctx.roundRect(-w / 2, -h / 2, w, h, 3 * scale);
+      ctx.roundRect(-w / 2, -h / 2, w, h, 4 * scale);
+      ctx.fill();
+      ctx.lineWidth = 1.6 * scale;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+
+      // Single sharp cel-shadow band on the right (clipped to body)
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 4 * scale);
+      ctx.clip();
+      ctx.fillStyle = "rgba(0,0,0,0.32)";
+      ctx.fillRect(w * 0.05, -h * 0.5, w * 0.55, h);
+      ctx.restore();
+
+      // Sash band across the middle (variant accent)
+      ctx.fillStyle = variantPalette.sash;
+      ctx.fillRect(-w * 0.5, -h * 0.05, w, h * 0.10);
+      ctx.lineWidth = 1.1 * scale;
+      ctx.strokeStyle = ink;
+      ctx.strokeRect(-w * 0.5, -h * 0.05, w, h * 0.10);
+
+      // Engine wheels (no glow)
+      ctx.fillStyle = "#0e0a18";
+      ctx.beginPath();
+      ctx.ellipse(0, -h * 0.36, w * 0.42, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1.1 * scale;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(0, h * 0.36, w * 0.42, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // === Oni mask ===
+      ctx.fillStyle = enemy.hitFlash > 0 ? "#fff" : variantPalette.mask;
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.34, -h * 0.66);
+      ctx.quadraticCurveTo(0, -h * 0.96, w * 0.34, -h * 0.66);
+      ctx.lineTo(w * 0.22, -h * 0.42);
+      ctx.lineTo(0, -h * 0.34);
+      ctx.lineTo(-w * 0.22, -h * 0.42);
+      ctx.closePath();
+      ctx.fill();
+      ctx.lineWidth = 1.6 * scale;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+
+      // Two horns (curving outward)
+      ctx.fillStyle = "#0e0610";
+      ctx.lineWidth = 1.3 * scale;
+      // Left horn
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.30, -h * 0.74);
+      ctx.quadraticCurveTo(-w * 0.56, -h * 1.02, -w * 0.20, -h * 1.06);
+      ctx.quadraticCurveTo(-w * 0.16, -h * 0.86, -w * 0.20, -h * 0.72);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Right horn
+      ctx.beginPath();
+      ctx.moveTo(w * 0.30, -h * 0.74);
+      ctx.quadraticCurveTo(w * 0.56, -h * 1.02, w * 0.20, -h * 1.06);
+      ctx.quadraticCurveTo(w * 0.16, -h * 0.86, w * 0.20, -h * 0.72);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Mask cel highlight (manga gleam)
+      ctx.fillStyle = "rgba(255,255,255,0.20)";
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.26, -h * 0.86);
+      ctx.lineTo(-w * 0.04, -h * 0.90);
+      ctx.lineTo(-w * 0.16, -h * 0.66);
+      ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = enemy.hitFlash > 0 ? "#ffc7d4" : "#76163c";
+      // Angry slit eyes
+      ctx.fillStyle = variantPalette.eye;
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeStyle = ink;
       ctx.beginPath();
-      ctx.roundRect(-w * 0.44, -h * 0.44, w * 0.88, h * 0.28, 2 * scale);
+      ctx.moveTo(-w * 0.24, -h * 0.62);
+      ctx.lineTo(-w * 0.06, -h * 0.66);
+      ctx.lineTo(-w * 0.10, -h * 0.58);
+      ctx.lineTo(-w * 0.24, -h * 0.56);
+      ctx.closePath();
       ctx.fill();
-
-      // Engine glow - brighter for aggressive enemies
-      const engineGlow = isAggressive ? "#ff2244" : "#ff456c";
-      ctx.fillStyle = engineGlow;
-      ctx.shadowColor = engineGlow;
-      ctx.shadowBlur = (isAggressive ? 12 : 8) * scale;
+      ctx.stroke();
       ctx.beginPath();
-      ctx.ellipse(0, -h * 0.36, w * 0.5, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.moveTo(w * 0.06, -h * 0.66);
+      ctx.lineTo(w * 0.24, -h * 0.62);
+      ctx.lineTo(w * 0.24, -h * 0.56);
+      ctx.lineTo(w * 0.10, -h * 0.58);
+      ctx.closePath();
       ctx.fill();
+      ctx.stroke();
+
+      // Single fang under the mask
+      ctx.fillStyle = "#fff";
       ctx.beginPath();
-      ctx.ellipse(0, h * 0.36, w * 0.5, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.moveTo(-w * 0.06, -h * 0.42);
+      ctx.lineTo(0, -h * 0.32);
+      ctx.lineTo(w * 0.06, -h * 0.42);
+      ctx.closePath();
       ctx.fill();
-      ctx.shadowBlur = 0;
+      ctx.lineWidth = 0.8 * scale;
+      ctx.stroke();
 
-      ctx.fillStyle = enemy.hitFlash > 0 ? "#fff" : "#18040b";
-      ctx.beginPath();
-      ctx.ellipse(0, -h * 0.62, w * 0.28, w * 0.28, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ff6430";
-      ctx.fillRect(-w * 0.22, -h * 0.68, w * 0.44, w * 0.18);
-
-      // Aggressive chase indicator - exhaust trail
+      // Aggressive enemy exhaust — kept as readable cue, ink-tail not glow
       if (isAggressive && !enemy.dying) {
         ctx.save();
-        ctx.globalAlpha = 0.4 + Math.sin(state.frame * 0.15) * 0.2;
-        ctx.fillStyle = "#ff3344";
-        ctx.shadowColor = "#ff3344";
-        ctx.shadowBlur = 8;
-        const exhaustW = w * 0.3;
-        const exhaustH = h * 0.15 + Math.sin(state.frame * 0.2) * 2;
-        ctx.beginPath();
-        ctx.moveTo(-exhaustW / 2, h * 0.5);
-        ctx.lineTo(exhaustW / 2, h * 0.5);
-        ctx.lineTo(0, h * 0.5 + exhaustH);
-        ctx.closePath();
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 0.55 + Math.sin(state.frame * 0.15) * 0.18;
+        ctx.fillStyle = variantPalette.trim;
+        for (let i = 0; i < 2; i += 1) {
+          const trailY = h * (0.52 + i * 0.10);
+          ctx.beginPath();
+          ctx.moveTo(-w * 0.14, trailY);
+          ctx.quadraticCurveTo(0, trailY + 4 + i * 2, w * 0.14, trailY);
+          ctx.lineTo(0, trailY + 6 + i * 3);
+          ctx.closePath();
+          ctx.fill();
+        }
         ctx.restore();
       }
 
+      // === Sword + telegraph + swing — gameplay-readable, kept identical timing ===
       if (enemy.dying <= 0) {
-        const attackAngle = enemy.attackFlash > 0 ? Math.sin(state.frame * 0.14) * 1.2 : -0.24;
+        const isTelegraphing = enemy.attackFlash > 0;
+        const isSwinging = enemy.attackSwing > 0;
+        const attackAngle = isSwinging
+          ? -1.55 + (1 - enemy.attackSwing / 12) * 2.4
+          : isTelegraphing
+            ? -0.9 + Math.sin(state.frame * 0.14) * 0.28
+            : -0.24;
         ctx.save();
         ctx.translate(w * 0.55, -h * 0.08);
         ctx.rotate(attackAngle);
-        const blade = enemy.attackFlash > 0 ? "#ff7d4d" : "#d06034";
+        const blade = (isTelegraphing || isSwinging) ? variantPalette.blade : "#d8c8b0";
         ctx.fillStyle = blade;
-        ctx.shadowColor = blade;
-        ctx.shadowBlur = enemy.attackFlash > 0 ? 12 * scale : 4 * scale;
         ctx.fillRect(-1.2 * scale, -h * 0.65, 2.4 * scale, h * 0.72);
-        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1 * scale;
+        ctx.strokeStyle = ink;
+        ctx.strokeRect(-1.2 * scale, -h * 0.65, 2.4 * scale, h * 0.72);
+        // Tsuba (small black guard)
+        ctx.fillStyle = "#1a0f0a";
+        ctx.fillRect(-2.4 * scale, -h * 0.06, 4.8 * scale, 1.6 * scale);
         ctx.restore();
 
-        if (enemy.attackFlash > 0) {
-          ctx.globalAlpha = (enemy.attackFlash / 18) * 0.5;
-          ctx.strokeStyle = "#ff5c3a";
-          ctx.lineWidth = 2 * scale;
+        // Telegraph (kept — gameplay-critical)
+        if (isTelegraphing) {
+          const telegraphAlpha = Math.min(0.76, 0.24 + (enemy.attackFlash / 24) * 0.5);
+          ctx.globalAlpha = telegraphAlpha;
+          ctx.strokeStyle = variantPalette.warning;
+          ctx.lineWidth = 2.5 * scale;
           ctx.beginPath();
-          ctx.ellipse(0, 0, w * 1.55, w * 1.05, 0, 0, Math.PI * 2);
+          ctx.ellipse(0, 0, w * 1.82, w * 1.24, 0, 0, Math.PI * 2);
           ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(0, -h * 1.06);
+          ctx.lineTo(-w * 0.18, -h * 0.84);
+          ctx.lineTo(w * 0.18, -h * 0.84);
+          ctx.closePath();
+          ctx.fillStyle = variantPalette.warning;
+          ctx.fill();
+          ctx.fillStyle = "rgba(255, 200, 120, 0.22)";
+          ctx.beginPath();
+          ctx.moveTo(0, -h * 0.2);
+          ctx.lineTo(w * 1.72, h * 0.16);
+          ctx.lineTo(-w * 0.14, h * 0.66);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(255, 240, 200, 0.85)";
+          ctx.fillRect(-w * 0.3, -h * 0.95, w * 0.6, h * 0.05);
+          ctx.globalAlpha = 1;
+        }
+
+        if (isSwinging) {
+          const swingAlpha = Math.max(0, enemy.attackSwing / 12) * 0.82;
+          ctx.save();
+          ctx.globalAlpha = swingAlpha;
+          ctx.strokeStyle = variantPalette.blade;
+          ctx.lineWidth = 4 * scale;
+          ctx.beginPath();
+          ctx.arc(0, -h * 0.04, w * 2.16, -1.12, 0.92);
+          ctx.stroke();
+          ctx.globalAlpha *= 0.4;
+          ctx.lineWidth = 9 * scale;
+          ctx.stroke();
+          ctx.restore();
           ctx.globalAlpha = 1;
         }
       }
@@ -2477,140 +4603,461 @@
       const scale = perspectiveScale(player.y);
       const w = player.w * scale;
       const h = player.h * scale;
+      const speedPulse = Math.sin(state.frame * 0.12) * 0.5 + 0.5;
+      const scarfWave = Math.sin(state.frame * 0.16) * (2.8 + state.speed * 0.14);
+      const ink = "#0a0814";
       ctx.save();
       ctx.translate(player.x, player.y);
       ctx.rotate(Math.sin(state.frame * 0.06) * player.wobble * 0.04);
+      if (state.ghostTimer > 0) {
+        ctx.globalAlpha = 0.62;
+      }
 
-      // Combo aura
+      // Aura — calmer, anime palette
       if (player.auraIntensity > 0.05) {
         ctx.save();
         const auraColor = state.comboStage === 2
-          ? `rgba(255, 105, 54, ${player.auraIntensity * 0.3})`
+          ? `rgba(217, 75, 90, ${player.auraIntensity * 0.30})`
           : state.comboStage === 1
-            ? `rgba(109, 247, 255, ${player.auraIntensity * 0.25})`
-            : `rgba(155, 125, 255, ${player.auraIntensity * 0.2})`;
-        const auraSize = w * (1.8 + player.auraIntensity * 0.8 + Math.sin(state.frame * 0.08) * 0.2);
-        ctx.shadowColor = auraColor;
-        ctx.shadowBlur = 20 * player.auraIntensity;
+            ? `rgba(170, 196, 217, ${player.auraIntensity * 0.22})`
+            : `rgba(83, 231, 255, ${player.auraIntensity * 0.16})`;
+        const auraSize = w * (1.95 + player.auraIntensity * 0.86 + Math.sin(state.frame * 0.08) * 0.2);
         ctx.fillStyle = auraColor;
         ctx.beginPath();
-        ctx.ellipse(0, 0, auraSize, auraSize * 0.7, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, auraSize, auraSize * 0.74, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowBlur = 0;
         ctx.restore();
       }
 
-      // Finisher-ready pulse
+      // Finisher-ready pulse ring
       if (state.comboStage === 2) {
         ctx.save();
         const pulsePhase = Math.sin(state.frame * 0.12) * 0.5 + 0.5;
-        ctx.globalAlpha = 0.15 + pulsePhase * 0.15;
-        ctx.strokeStyle = "#ff6936";
+        ctx.globalAlpha = 0.22 + pulsePhase * 0.16;
+        ctx.strokeStyle = "#d94a55";
         ctx.lineWidth = 2;
-        ctx.shadowColor = "#ff6936";
-        ctx.shadowBlur = 16;
-        const pulseR = w * (2 + pulsePhase * 0.6);
+        const pulseR = w * (2.12 + pulsePhase * 0.62);
         ctx.beginPath();
-        ctx.ellipse(0, 0, pulseR, pulseR * 0.6, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, pulseR, pulseR * 0.62, 0, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.shadowBlur = 0;
         ctx.restore();
       }
 
-      ctx.globalAlpha = 0.3;
+      // Shield aura — soft sky blue ink ring
+      if (player.shield > 0) {
+        ctx.save();
+        ctx.globalAlpha = 0.30 + speedPulse * 0.08;
+        ctx.strokeStyle = "#9ec6d4";
+        ctx.lineWidth = 2 * scale;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, w * 1.34, h * 0.82, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Immunity / ghost ring
+      if (state.immunityTimer > 0 || state.ghostTimer > 0) {
+        ctx.save();
+        ctx.globalAlpha = state.immunityTimer > 0 ? 0.30 : 0.18;
+        ctx.strokeStyle = state.immunityTimer > 0 ? "#f5c451" : "#aac4d9";
+        ctx.lineWidth = 2 * scale;
+        ctx.setLineDash(state.ghostTimer > 0 ? [4 * scale, 3 * scale] : []);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, w * 1.52, h * 0.92, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Dash streak
+      if (player.dashTimer > 0) {
+        ctx.save();
+        ctx.globalAlpha = 0.20 + (player.dashTimer / 12) * 0.16;
+        ctx.fillStyle = "#aac4d9";
+        ctx.beginPath();
+        ctx.ellipse(-w * 0.12, h * 0.05, w * 1.2, h * 0.46, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Ground shadow
+      ctx.globalAlpha = 0.34;
       ctx.fillStyle = "#000";
       ctx.beginPath();
-      ctx.ellipse(0, h * 0.58, w * 0.66, 5 * scale, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, h * 0.58, w * 0.72, 5 * scale, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.globalAlpha = 1;
 
-      ctx.fillStyle = "#1e2357";
+      // === Hair tufts behind helmet (drawn before bike body so they sit just under the rider) ===
+      ctx.fillStyle = "#0a0a22";
+      ctx.lineWidth = 1.2 * scale;
+      ctx.strokeStyle = ink;
+      // Left tuft
       ctx.beginPath();
-      ctx.roundRect(-w / 2, -h / 2, w, h, 3 * scale);
+      ctx.moveTo(-w * 0.30, -h * 0.52);
+      ctx.lineTo(-w * 0.54, -h * 0.10);
+      ctx.lineTo(-w * 0.32, -h * 0.30);
+      ctx.lineTo(-w * 0.40, h * 0.04);
+      ctx.lineTo(-w * 0.18, -h * 0.26);
+      ctx.lineTo(-w * 0.06, -h * 0.46);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Right tuft (smaller)
+      ctx.beginPath();
+      ctx.moveTo(w * 0.06, -h * 0.50);
+      ctx.lineTo(w * 0.10, -h * 0.28);
+      ctx.lineTo(w * 0.24, -h * 0.38);
+      ctx.lineTo(w * 0.32, -h * 0.26);
+      ctx.lineTo(w * 0.30, -h * 0.50);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // === Bike body — flat indigo with bold ink outline ===
+      ctx.fillStyle = "#1c2252";
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 4 * scale);
+      ctx.fill();
+      ctx.lineWidth = 1.7 * scale;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+
+      // Single sharp cel-shadow band (clipped to body)
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 4 * scale);
+      ctx.clip();
+      ctx.fillStyle = "rgba(0,0,0,0.30)";
+      ctx.fillRect(w * 0.05, -h * 0.5, w * 0.55, h);
+      ctx.restore();
+
+      // Front fairing — brighter blue accent with ink outline
+      ctx.fillStyle = "#3a5cd9";
+      ctx.beginPath();
+      ctx.roundRect(-w * 0.42, -h * 0.42, w * 0.84, h * 0.22, 2 * scale);
+      ctx.fill();
+      ctx.lineWidth = 1.3 * scale;
+      ctx.stroke();
+
+      // Foot peg
+      ctx.fillStyle = "#2a2f56";
+      ctx.fillRect(-w * 0.58, h * 0.10, w * 0.14, h * 0.32);
+      ctx.lineWidth = 1.1 * scale;
+      ctx.strokeRect(-w * 0.58, h * 0.10, w * 0.14, h * 0.32);
+
+      // Wheels — flat black, ink outline (no neon)
+      ctx.fillStyle = "#0e0a18";
+      ctx.beginPath();
+      ctx.ellipse(0, -h * 0.36, w * 0.46, 5 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1.2 * scale;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(0, h * 0.36, w * 0.46, 5 * scale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // === Flowing red scarf — kept, but with ink outline so it pops as anime cloth ===
+      ctx.save();
+      ctx.fillStyle = state.comboStage === 2 ? "#e8742a" : "#d63a1f";
+      ctx.globalAlpha = 0.92;
+      for (let i = 0; i < 4; i += 1) {
+        const tail = 1 + i * 0.26;
+        const drift = scarfWave + Math.sin(state.frame * 0.1 + i * 0.7) * 1.8;
+        ctx.beginPath();
+        ctx.moveTo(-w * (0.12 + i * 0.04), -h * 0.52);
+        ctx.quadraticCurveTo(-w * (0.72 + tail * 0.12), -h * (0.42 - i * 0.03) + drift, -w * (0.38 + tail * 0.08), -h * (0.34 - i * 0.02));
+        ctx.lineTo(-w * 0.04, -h * 0.45);
+        ctx.closePath();
+        ctx.fill();
+        ctx.lineWidth = 1 * scale;
+        ctx.strokeStyle = ink;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // === Helmet / face plate — dark indigo with ink outline ===
+      ctx.fillStyle = "#161636";
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.30, -h * 0.81);
+      ctx.quadraticCurveTo(0, -h * 1.06, w * 0.30, -h * 0.81);
+      ctx.lineTo(w * 0.22, -h * 0.54);
+      ctx.lineTo(0, -h * 0.42);
+      ctx.lineTo(-w * 0.22, -h * 0.54);
+      ctx.closePath();
+      ctx.fill();
+      ctx.lineWidth = 1.7 * scale;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+
+      // Helmet cel highlight
+      ctx.fillStyle = "rgba(255,255,255,0.18)";
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.22, -h * 0.85);
+      ctx.lineTo(w * 0.02, -h * 0.94);
+      ctx.lineTo(w * 0.10, -h * 0.72);
+      ctx.lineTo(-w * 0.18, -h * 0.66);
+      ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = "#4262f4";
+      // Hachimaki (red headband) across forehead
+      ctx.fillStyle = "#e02a2a";
+      ctx.fillRect(-w * 0.28, -h * 0.78, w * 0.56, h * 0.06);
+      ctx.lineWidth = 1 * scale;
+      ctx.strokeStyle = ink;
+      ctx.strokeRect(-w * 0.28, -h * 0.78, w * 0.56, h * 0.06);
+      // Knot dot on the side
+      ctx.fillStyle = "#e02a2a";
       ctx.beginPath();
-      ctx.roundRect(-w * 0.44, -h * 0.44, w * 0.88, h * 0.28, 2 * scale);
+      ctx.arc(-w * 0.32, -h * 0.74, 1.6 * scale, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
 
-      ctx.fillStyle = "#4a4f73";
-      ctx.fillRect(-w * 0.54, h * 0.1, w * 0.12, h * 0.34);
-
-      ctx.fillStyle = "#9b7dff";
-      ctx.shadowColor = "#9b7dff";
-      ctx.shadowBlur = 10 * scale;
+      // === Anime almond eyes — combo state changes the expression, not the color ===
+      const intense = state.comboStage === 2 || player.attacking === 3;
+      ctx.fillStyle = ink;
+      // Left eye
       ctx.beginPath();
-      ctx.ellipse(0, -h * 0.36, w * 0.5, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.ellipse(-w * 0.13, -h * 0.66, w * 0.07, h * 0.035, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Right eye
+      ctx.beginPath();
+      ctx.ellipse(w * 0.13, -h * 0.66, w * 0.07, h * 0.035, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Catch lights (anime sparkle in eye)
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(-w * 0.10, -h * 0.67, 1 * scale, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
-      ctx.ellipse(0, h * 0.36, w * 0.5, 4 * scale, 0, 0, Math.PI * 2);
+      ctx.arc(w * 0.16, -h * 0.67, 1 * scale, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0;
+      // Angry brow when finisher-ready (kept because it's gameplay-readable feedback)
+      if (intense) {
+        ctx.strokeStyle = ink;
+        ctx.lineWidth = 1.3 * scale;
+        ctx.beginPath();
+        ctx.moveTo(-w * 0.20, -h * 0.72);
+        ctx.lineTo(-w * 0.08, -h * 0.69);
+        ctx.moveTo(w * 0.20, -h * 0.72);
+        ctx.lineTo(w * 0.08, -h * 0.69);
+        ctx.stroke();
+      }
 
-      ctx.fillStyle = "#11173c";
-      ctx.beginPath();
-      ctx.roundRect(-w * 0.35, -h * 0.72, w * 0.7, h * 0.28, 2 * scale);
-      ctx.fill();
-
-      ctx.fillStyle = "#ff5e3a";
-      ctx.fillRect(-w * 0.35, -h * 0.5, w * 0.7, h * 0.08);
-
-      ctx.fillStyle = "#11173c";
-      ctx.beginPath();
-      ctx.ellipse(0, -h * 0.82, w * 0.27, w * 0.27, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#ff5e3a";
-      ctx.fillRect(-w * 0.27, -h * 0.9, w * 0.54, h * 0.1);
-
-      // Eyes change with combo stage
-      const eyeColor = player.attacking === 3 ? "#ff7d4d"
-        : state.comboStage === 2 ? "#ff6936"
-        : state.comboStage === 1 ? "#6df7ff"
-        : "#6df7ff";
-      ctx.fillStyle = eyeColor;
-      ctx.shadowColor = eyeColor;
-      ctx.shadowBlur = (state.comboStage === 2 ? 14 : 8) * scale;
-      ctx.fillRect(-w * 0.18, -h * 0.87, w * 0.14, h * 0.04);
-      ctx.fillRect(w * 0.04, -h * 0.87, w * 0.14, h * 0.04);
-      ctx.shadowBlur = 0;
-
+      // === Katana — black tsuka, gold tsuba, white blade with single ink-line shine ===
       const swordAngle = player.attacking === 1 ? -1.3 : player.attacking === 2 ? 1.2 : player.attacking === 3 ? -1.6 : -0.22;
       ctx.save();
       ctx.translate(w * 0.5, -h * 0.6);
       ctx.rotate(swordAngle);
-      ctx.fillStyle = "#8056ff";
-      ctx.fillRect(-1.4 * scale, 0, 2.8 * scale, 8 * scale);
+      // Handle (tsuka)
+      ctx.fillStyle = "#15151e";
+      ctx.fillRect(-1.5 * scale, 0, 3 * scale, 8 * scale);
+      ctx.lineWidth = 0.9 * scale;
+      ctx.strokeStyle = ink;
+      ctx.strokeRect(-1.5 * scale, 0, 3 * scale, 8 * scale);
+      // Tsuba (gold guard)
       ctx.fillStyle = "#d7aa34";
       ctx.fillRect(-4 * scale, 7 * scale, 8 * scale, 3 * scale);
-      const blade = player.attacking === 3 ? "#ff7d4d" : player.attacking === 2 ? "#6df7ff" : "#eef0ff";
-      ctx.fillStyle = blade;
-      ctx.shadowColor = blade;
-      ctx.shadowBlur = player.attacking > 0 ? (player.attacking === 3 ? 22 : 14) * scale : 5 * scale;
+      ctx.strokeRect(-4 * scale, 7 * scale, 8 * scale, 3 * scale);
+      // Blade — white with ink edge
+      const bladeLength = (player.attacking === 3 ? 52 : 38) * scale * (state.bladeExtensionTimer > 0 ? 1.26 : 1);
+      ctx.fillStyle = "#f4ecec";
       ctx.beginPath();
       ctx.moveTo(-2 * scale, 10 * scale);
       ctx.lineTo(2 * scale, 10 * scale);
-      ctx.lineTo(0.5 * scale, 10 * scale + (player.attacking === 3 ? 52 : 38) * scale);
+      ctx.lineTo(0.5 * scale, 10 * scale + bladeLength);
       ctx.closePath();
       ctx.fill();
-      ctx.shadowBlur = 0;
+      ctx.lineWidth = 1 * scale;
+      ctx.stroke();
+      // Manga shine: single ink line down the center of the blade
+      ctx.strokeStyle = "rgba(0,0,0,0.45)";
+      ctx.lineWidth = 0.7 * scale;
+      ctx.beginPath();
+      ctx.moveTo(-0.6 * scale, 12 * scale);
+      ctx.lineTo(0.4 * scale, 10 * scale + bladeLength * 0.86);
+      ctx.stroke();
+      // Speed-line gleam during a swing
+      if (player.attacking > 0) {
+        ctx.strokeStyle = `rgba(255,255,255,${0.45 + speedPulse * 0.30})`;
+        ctx.lineWidth = 1.3 * scale;
+        ctx.beginPath();
+        ctx.moveTo(-1.4 * scale, 16 * scale);
+        ctx.lineTo(0.2 * scale, 10 * scale + bladeLength * 0.7);
+        ctx.stroke();
+      }
       ctx.restore();
 
-      for (let i = 0; i < 3; i += 1) {
+      // === HP heart pips — flat red with ink outline ===
+      for (let i = 0; i < player.maxHp; i += 1) {
         const active = i < player.hp;
-        ctx.fillStyle = active ? "#ff5b74" : "#2a1a28";
-        ctx.shadowColor = active ? "#ff5b74" : "transparent";
-        ctx.shadowBlur = active ? 8 * scale : 0;
+        ctx.fillStyle = active ? "#d63a1f" : "#2a1a28";
         ctx.beginPath();
         ctx.arc(-18 + i * 18, h * 0.8, 4.5 * scale, 0, Math.PI * 2);
         ctx.fill();
+        ctx.lineWidth = 0.9 * scale;
+        ctx.strokeStyle = ink;
+        ctx.stroke();
       }
       ctx.shadowBlur = 0;
       ctx.restore();
     }
 
+    // Power-ups use only canvas primitives so they stay lightweight and cache-free.
+    function drawPowerUp(powerUp) {
+      const bobY = Math.sin(powerUp.bob) * 4;
+      const pulse = 0.85 + (Math.sin(powerUp.pulse) * 0.5 + 0.5) * 0.25;
+      const spec = getPowerUpSpec(powerUp.type);
+      const palette = { core: spec.color, ring: spec.ring };
+
+      ctx.save();
+      ctx.translate(powerUp.x, powerUp.y + bobY);
+      ctx.globalAlpha = Math.min(1, powerUp.life / 45);
+      ctx.fillStyle = palette.ring;
+      ctx.beginPath();
+      ctx.arc(0, 0, powerUp.size * 0.9 * pulse, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#0c1228";
+      ctx.strokeStyle = palette.core;
+      ctx.lineWidth = 2;
+      ctx.shadowColor = palette.core;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(0, 0, powerUp.size * 0.62 * pulse, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      if (powerUp.type === POWER_UP_TYPES.SHIELD) {
+        ctx.moveTo(0, -7);
+        ctx.lineTo(6, -2);
+        ctx.lineTo(4, 6);
+        ctx.lineTo(0, 9);
+        ctx.lineTo(-4, 6);
+        ctx.lineTo(-6, -2);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.SLOWMO) {
+        ctx.arc(0, 0, 6, 0, Math.PI * 2);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -4.5);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(3.5, 2.5);
+      } else if (powerUp.type === POWER_UP_TYPES.HEAL) {
+        ctx.moveTo(-2, -6);
+        ctx.lineTo(2, -6);
+        ctx.lineTo(2, -2);
+        ctx.lineTo(6, -2);
+        ctx.lineTo(6, 2);
+        ctx.lineTo(2, 2);
+        ctx.lineTo(2, 6);
+        ctx.lineTo(-2, 6);
+        ctx.lineTo(-2, 2);
+        ctx.lineTo(-6, 2);
+        ctx.lineTo(-6, -2);
+        ctx.lineTo(-2, -2);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.GHOST) {
+        ctx.arc(0, -1, 5.5, Math.PI, 0);
+        ctx.lineTo(6, 6);
+        ctx.lineTo(-6, 6);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.IMMUNITY) {
+        ctx.moveTo(0, -7);
+        ctx.lineTo(2, -2);
+        ctx.lineTo(7, -2);
+        ctx.lineTo(3, 1);
+        ctx.lineTo(5, 7);
+        ctx.lineTo(0, 3.5);
+        ctx.lineTo(-5, 7);
+        ctx.lineTo(-3, 1);
+        ctx.lineTo(-7, -2);
+        ctx.lineTo(-2, -2);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.BLADE_EXTEND) {
+        ctx.moveTo(-1.5, -7);
+        ctx.lineTo(1.5, -7);
+        ctx.lineTo(3.5, 4);
+        ctx.lineTo(0, 7);
+        ctx.lineTo(-3.5, 4);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.CHAIN_LIGHTNING) {
+        ctx.moveTo(2, -7);
+        ctx.lineTo(-1, -1);
+        ctx.lineTo(2, -1);
+        ctx.lineTo(-2, 7);
+        ctx.lineTo(1, 1);
+        ctx.lineTo(-2, 1);
+        ctx.closePath();
+      } else if (powerUp.type === POWER_UP_TYPES.DOUBLE_SCORE) {
+        ctx.moveTo(-6, -4);
+        ctx.lineTo(-1, -4);
+        ctx.lineTo(-1, 4);
+        ctx.lineTo(4, 4);
+        ctx.moveTo(3, -4);
+        ctx.lineTo(6, -4);
+        ctx.lineTo(6, 4);
+      }
+      ctx.strokeStyle = "#f6fbff";
+      ctx.lineWidth = powerUp.type === POWER_UP_TYPES.SLOWMO ? 2.2 : 1.8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+    }
+
     function drawEffects() {
+      // Anime speed lines and ink-like overlays keep the action close and dramatic.
+      ctx.save();
+      ctx.globalAlpha = 0.09 + Math.min(0.08, state.speed / 200);
+      for (let i = 0; i < 8; i += 1) {
+        const sweep = ((state.frame * 0.03 + i * 0.11) % 1);
+        const y = view.h * (0.42 + sweep * 0.52);
+        const len = 22 + sweep * 30;
+        ctx.strokeStyle = i % 2 === 0 ? "rgba(255,186,120,0.22)" : "rgba(255,255,255,0.12)";
+        ctx.lineWidth = 1 + sweep * 1.8;
+        ctx.beginPath();
+        ctx.moveTo(view.w * 0.08, y);
+        ctx.lineTo(view.w * 0.08 + len, y - 6);
+        ctx.moveTo(view.w * 0.92, y);
+        ctx.lineTo(view.w * 0.92 - len, y - 6);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      if (state.slowMoTimer > 0) {
+        const alpha = Math.min(0.12, state.slowMoTimer / 4 * 0.12);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = "rgba(125, 104, 255, 0.55)";
+        ctx.fillRect(0, road().horizon, view.w, view.h - road().horizon);
+        ctx.restore();
+      }
+
+      if (state.doubleScoreTimer > 0) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(0.1, state.doubleScoreTimer / 6 * 0.1);
+        ctx.fillStyle = "rgba(255, 111, 153, 0.48)";
+        ctx.fillRect(0, road().horizon, view.w, view.h - road().horizon);
+        ctx.restore();
+      }
+
+      state.lightningArcs.forEach((arc) => {
+        const t = arc.life / arc.max;
+        ctx.save();
+        ctx.globalAlpha = t * 0.9;
+        ctx.strokeStyle = arc.color;
+        ctx.lineWidth = 3;
+        ctx.shadowColor = arc.color;
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.moveTo(arc.fromX, arc.fromY);
+        const midX = (arc.fromX + arc.toX) * 0.5 + Math.sin(state.frame * 0.16) * 10;
+        const midY = (arc.fromY + arc.toY) * 0.5 - 12;
+        ctx.lineTo(midX, midY);
+        ctx.lineTo(arc.toX, arc.toY);
+        ctx.stroke();
+        ctx.restore();
+      });
+
       state.slashes.forEach((slash) => {
         const t = slash.life / slash.max;
         ctx.save();
@@ -2653,10 +5100,18 @@
         ctx.globalAlpha = Math.max(0, p.life / 30);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 6;
+        ctx.shadowBlur = p.life > 12 ? 10 : 4;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
+        if (p.life > 16 && p.size > 2.2) {
+          ctx.globalAlpha *= 0.45;
+          ctx.beginPath();
+          ctx.ellipse(p.x, p.y, p.size * 2.2, p.size * 0.8, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
       });
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
@@ -2680,6 +5135,7 @@
         else drawEnemy(entry.ref);
       });
 
+      state.powerUps.forEach(drawPowerUp);
       drawEffects();
       if (!state.player.dead) drawPlayer();
 
@@ -2698,10 +5154,13 @@
       }
 
       ctx.globalAlpha = 0.08;
-      const vignette = ctx.createRadialGradient(view.w * 0.5, view.h * 0.52, view.w * 0.18, view.w * 0.5, view.h * 0.52, view.w * 0.8);
-      vignette.addColorStop(0, "rgba(0, 0, 0, 0)");
-      vignette.addColorStop(1, "rgba(0, 0, 0, 0.8)");
-      ctx.fillStyle = vignette;
+      if (!state._vignetteCache || state._vignetteCache.w !== view.w || state._vignetteCache.h !== view.h) {
+        const vignette = ctx.createRadialGradient(view.w * 0.5, view.h * 0.52, view.w * 0.18, view.w * 0.5, view.h * 0.52, view.w * 0.8);
+        vignette.addColorStop(0, "rgba(0, 0, 0, 0)");
+        vignette.addColorStop(1, "rgba(0, 0, 0, 0.8)");
+        state._vignetteCache = { w: view.w, h: view.h, gradient: vignette };
+      }
+      ctx.fillStyle = state._vignetteCache.gradient;
       ctx.fillRect(0, 0, view.w, view.h);
 
       ctx.restore();
@@ -2718,11 +5177,14 @@
 
     function handleAction(action) {
       if (state.mode === "menu" || !state.mode) {
-        if (action === "start") startGame();
         return;
       }
-      if (state.mode === "dead" && action !== "restart") {
-        setMenuMode();
+      if (state.mode === "dead") {
+        if (action === "restart") {
+          startGame();
+        } else if (action === "menu") {
+          setMenuMode();
+        }
         return;
       }
       if (action === "left") moveLane(-1);
@@ -2730,7 +5192,8 @@
       if (action === "up") moveY(-1);
       if (action === "down") moveY(1);
       if (action === "attack") attack();
-      if (action === "restart") setMenuMode();
+      if (action === "dash") activateDash();
+      if (action === "powerup") activateStoredPowerUp();
     }
 
     function showUpdatePrompt() {
@@ -2739,9 +5202,31 @@
       updateBox.classList.remove("hidden");
     }
 
+    let lastTouchButtonTime = 0;
+    function bindPress(button, handler) {
+      if (!button) return;
+
+      button.addEventListener("pointerup", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        lastTouchButtonTime = performance.now();
+        ensureAudio();
+        event.preventDefault();
+        handler(event);
+      });
+
+      button.addEventListener("click", (event) => {
+        if (performance.now() - lastTouchButtonTime < 400) {
+          event.preventDefault();
+          return;
+        }
+        ensureAudio();
+        handler(event);
+      });
+    }
+
     window.addEventListener("keydown", (event) => {
       ensureAudio();
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "z", "x", "Enter"].includes(event.key)) {
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "z", "x", "Enter", "c", "Shift"].includes(event.key)) {
         event.preventDefault();
       }
       if (event.key === "Enter" && state.mode === "menu") {
@@ -2753,21 +5238,25 @@
       if (event.key === "ArrowUp") handleAction("up");
       if (event.key === "ArrowDown") handleAction("down");
       if (event.key === " " || event.key === "z" || event.key === "x") handleAction("attack");
+      if (event.key === "Shift") handleAction("dash");
+      if (event.key === "c") handleAction("powerup");
       if ((event.key === "Enter" || event.key === "r") && state.mode === "dead") handleAction("restart");
     }, { passive: false });
 
     canvas.addEventListener("pointerdown", (event) => {
-      if (event.pointerType !== "mouse") return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
       ensureAudio();
       pointerStart = { x: event.clientX, y: event.clientY };
+      event.preventDefault();
     });
 
     canvas.addEventListener("pointerup", (event) => {
-      if (event.pointerType !== "mouse") return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
       if (!pointerStart) return;
       const dx = event.clientX - pointerStart.x;
       const dy = event.clientY - pointerStart.y;
       pointerStart = null;
+      event.preventDefault();
       if (Math.abs(dx) < 20 && Math.abs(dy) < 20) {
         handleAction("attack");
         return;
@@ -2830,7 +5319,24 @@
     attackBtn.addEventListener("pointerup", endAttackPointer);
     attackBtn.addEventListener("pointercancel", endAttackPointer);
 
-    restartBtn.addEventListener("click", () => handleAction("restart"));
+    dashBtn.addEventListener("pointerdown", (event) => {
+      ensureAudio();
+      dashPointerId = event.pointerId;
+      dashBtn.setPointerCapture(event.pointerId);
+      handleAction("dash");
+      event.preventDefault();
+    });
+
+    const endDashPointer = (event) => {
+      if (event.pointerId !== dashPointerId) return;
+      try {
+        dashBtn.releasePointerCapture(event.pointerId);
+      } catch {}
+      dashPointerId = null;
+    };
+
+    dashBtn.addEventListener("pointerup", endDashPointer);
+    dashBtn.addEventListener("pointercancel", endDashPointer);
 
     window.addEventListener("resize", resize);
 
@@ -2845,7 +5351,7 @@
       installBox.classList.add("hidden");
     });
 
-    installBtn.addEventListener("click", async () => {
+    bindPress(installBtn, async () => {
       ensureAudio();
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
@@ -2854,17 +5360,26 @@
       installBox.classList.add("hidden");
     });
 
-    updateBtn.addEventListener("click", () => {
+    bindPress(updateBtn, () => {
       window.location.reload();
     });
 
-    startBtn.addEventListener("click", () => startGame());
-    howToBtn.addEventListener("click", () => openMenuPanel(howToPanel));
-    optionsBtn.addEventListener("click", () => openMenuPanel(optionsPanel));
-    creditsBtn.addEventListener("click", () => openMenuPanel(creditsPanel));
+    bindPress(startBtn, () => startGame());
+    bindPress(missionsBtn, () => openMenuPanel(missionsPanel));
+    bindPress(howToBtn, () => openMenuPanel(howToPanel));
+    bindPress(optionsBtn, () => openMenuPanel(optionsPanel));
+    bindPress(creditsBtn, () => openMenuPanel(creditsPanel));
+    bindPress(normalBtn, () => selectDifficulty("normal"));
+    bindPress(hardBtn, () => selectDifficulty("hard"));
+    bindPress(menuNormalBtn, () => selectDifficulty("normal"));
+    bindPress(menuHardBtn, () => selectDifficulty("hard"));
+    bindPress(missionFab, () => toggleMissionPanel());
+    bindPress(powerupBtn, () => handleAction("powerup"));
+    bindPress(restartBtn, () => handleAction("restart"));
+    bindPress(menuBtn, () => handleAction("menu"));
 
     document.querySelectorAll("[data-close-panel]").forEach((button) => {
-      button.addEventListener("click", () => hideMenuPanels());
+      bindPress(button, () => hideMenuPanels());
     });
 
     masterVolume.addEventListener("input", () => {
@@ -2919,6 +5434,8 @@
     }
 
     applyAudioSettings();
+    renderMissions();
+    refreshDifficultyUi();
     resize();
     resetGame();
     setMenuMode();
