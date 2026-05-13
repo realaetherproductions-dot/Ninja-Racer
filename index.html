@@ -152,9 +152,10 @@
       top: calc(env(safe-area-inset-top, 0px) + 18px);
       left: auto;
       right: var(--hud-pad);
-      width: min(76vw, 364px);
+      width: min(78vw, 392px);
       padding: 10px 12px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 10px;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -620,9 +621,9 @@
       left: var(--hud-pad);
       right: calc(var(--hud-pad) + 58px);
       bottom: calc(env(safe-area-inset-bottom, 0px) + 154px);
-      display: flex;
+      display: none;
       gap: 8px;
-      pointer-events: auto;
+      pointer-events: none;
     }
 
     .diff-strip-btn {
@@ -1003,7 +1004,9 @@
     }
 
     .install {
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 106px);
+      top: calc(env(safe-area-inset-top, 0px) + 18px);
+      left: var(--hud-pad);
+      right: auto;
       padding: 12px 14px;
       display: flex;
       align-items: center;
@@ -1029,6 +1032,29 @@
       font-size: 13px;
       color: var(--subtle);
       line-height: 1.35;
+    }
+
+    .topbar .install {
+      position: static;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none;
+    }
+
+    .topbar .install p {
+      display: none;
+    }
+
+    .topbar .install button {
+      min-height: 32px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .update-banner p {
@@ -1181,7 +1207,7 @@
     }
 
     #app.compact .hud-strip {
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 144px);
+      display: none;
     }
 
     #app.compact .mission-fab {
@@ -1863,17 +1889,16 @@
             <strong id="crystalLabel">0</strong>
           </div>
         </div>
+        <div class="install hidden" id="installBox">
+          <p>Install NinjaCycle on your phone for a full-screen app experience.</p>
+          <button id="installBtn" type="button">Install</button>
+        </div>
       </div>
 
       <div class="tip" id="tipBox">Swipe the road, use arrows, or steer with the joystick to dodge traffic. Tap SLASH three times in rhythm for the finisher.</div>
       <div class="combo-popup hidden" id="comboPopup">
         <small>Combo</small>
         <strong id="comboPopupLabel">0x</strong>
-      </div>
-
-      <div class="install hidden" id="installBox">
-        <p>Install NinjaCycle on your phone for a full-screen app experience.</p>
-        <button id="installBtn" type="button">Install</button>
       </div>
 
       <div class="update-banner hidden" id="updateBox">
@@ -1898,11 +1923,6 @@
         <div class="go-message" id="goMessage"></div>
         <button id="restartBtn" type="button" class="go-primary">Ride Again</button>
         <button id="menuBtn" type="button" class="go-secondary">Menu</button>
-      </div>
-
-      <div class="hud-strip">
-        <button class="diff-strip-btn active-normal" id="normalBtn" type="button">Normal</button>
-        <button class="diff-strip-btn" id="hardBtn" type="button">Hardcore<small id="hardLockLabel">Unlock: Best 500</small></button>
       </div>
 
       <button class="mission-fab" id="missionFab" type="button">📋</button>
@@ -2087,9 +2107,6 @@
     const bestScoreLabel = document.getElementById("bestScoreLabel");
     const menuCrystalLabel = document.getElementById("menuCrystalLabel");
     const crystalLabel = document.getElementById("crystalLabel");
-    const normalBtn = document.getElementById("normalBtn");
-    const hardBtn = document.getElementById("hardBtn");
-    const hardLockLabel = document.getElementById("hardLockLabel");
     const menuNormalBtn = document.getElementById("menuNormalBtn");
     const menuHardBtn = document.getElementById("menuHardBtn");
     const menuHardText = document.getElementById("menuHardText");
@@ -2448,13 +2465,9 @@
     }
 
     function refreshDifficultyUi() {
-      normalBtn.className = `diff-strip-btn${selectedDifficulty === "normal" ? " active-normal" : ""}`;
-      hardBtn.className = `diff-strip-btn${selectedDifficulty === "hard" ? " active-hard" : ""}`;
       menuNormalBtn.className = `diff-btn${selectedDifficulty === "normal" ? " active-normal" : ""}`;
       menuHardBtn.className = `diff-btn${selectedDifficulty === "hard" ? " active-hard" : ""}${hardUnlocked ? "" : " locked"}`;
-      hardBtn.disabled = !hardUnlocked;
       menuHardBtn.disabled = !hardUnlocked;
-      hardLockLabel.textContent = hardUnlocked ? "Unlocked" : "Unlock: Best 500";
       menuHardText.textContent = hardUnlocked ? "Unlocked" : "Unlock with Best 500";
     }
 
@@ -5369,8 +5382,6 @@
     bindPress(howToBtn, () => openMenuPanel(howToPanel));
     bindPress(optionsBtn, () => openMenuPanel(optionsPanel));
     bindPress(creditsBtn, () => openMenuPanel(creditsPanel));
-    bindPress(normalBtn, () => selectDifficulty("normal"));
-    bindPress(hardBtn, () => selectDifficulty("hard"));
     bindPress(menuNormalBtn, () => selectDifficulty("normal"));
     bindPress(menuHardBtn, () => selectDifficulty("hard"));
     bindPress(missionFab, () => toggleMissionPanel());
